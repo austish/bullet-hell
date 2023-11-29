@@ -1,2 +1,2 @@
 # bullet-hell
-CS 32 arcade project with Meron Tesfandrias, Austin Quach, and  
+CS 32 arcade project with Meron Tesfandrias and Austin Quach
