@@ -2,13 +2,10 @@
 #include <OpenGL/gl.h>
 #include <GLUT/glut.h>
 #include "lib/player.h"
+#include "lib/npc.h"
 
 // Initialize player
 Player p;
-
-// Initialize game
-// void init() {
-//    // Initialize npcs, etc. here
 
 // Initialize NPCs
 NPC enemies[3] = {
@@ -54,6 +51,11 @@ void display() {
 // Update function
 void update(int value) {
    p.updatePlayer();
+
+   for (int i = 0; i < sizeof(enemies) / sizeof(enemies[0]); ++i) {
+        enemies[i].updateNPC();
+   }
+
    glutPostRedisplay();
    glutTimerFunc(16, update, 0); // Approx 60 FPS
 }
@@ -74,7 +76,6 @@ int main(int argc, char** argv) {
    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
    glutInitWindowSize(1100, 800);
    glutCreateWindow("Temporary name");
-   // init();
 
    // Handle display and keyboard updates
    glutDisplayFunc(display);

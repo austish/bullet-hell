@@ -1,7 +1,5 @@
 #include "npc.h"
 
-
-
 NPC::NPC(float X, float Y, float size, float speed)
 : NPCPosX(X), NPCPosY(Y), NPCSize(size), NPCSpeed(speed) {}
 
