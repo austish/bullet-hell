@@ -1,26 +1,24 @@
 #include "npc.h"
 
-
-
-npc::NPC(float X, float Y, float size, float speed)
+NPC::NPC(float X, float Y, float size, float speed)
 : NPCPosX(X), NPCPosY(Y), NPCSize(size), NPCSpeed(speed) {}
 
-void npc::updateNPC(){
-    npcPosX += npcSpeed;
+void NPC::updateNPC(){
+    NPCPosX += NPCSpeed;
     //if NPC moves outside of range gets moved to other side
-    if (npcPosX > 400.0f){
-        npcPosX = -400.0f;
+    if (NPCPosX > 400.0f){
+        NPCPosX = -400.0f;
     }
 }
 
-float npc::getPosX(){
+float NPC::getPosX(){
     return NPCPosX;
 }
 
-float npc::getPosY(){
+float NPC::getPosY(){
     return NPCPosY;
 }
 
-float npc::getSize(){
+float NPC::getSize(){
     return NPCSize;
 }
