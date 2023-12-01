@@ -1,8 +1,11 @@
 #define GL_SILENCE_DEPRECATION
-#include <OpenGL/gl.h>
-#include <GLUT/glut.h>
+//#include <OpenGL/gl.h>
+//#include <GLUT/glut.h>
+#include <GL/glut.h>
+#include <GL/freeglut.h>
+
 #include <cstring>
-#include "npc.h"
+#include "lib/npc.h"
 
 // Initialize NPCs
 NPC enemies[3] = {
@@ -34,7 +37,7 @@ void display() {
 
 // Update function
 void update(int value) {
-   for (int i = 0; i < enemies.size(); ++i) {
+   for (int i = 0; i < sizeof(enemies) / sizeof(enemies[0]); ++i) {
         enemies[i].updateNPC();
     }
 
