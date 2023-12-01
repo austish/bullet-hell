@@ -24,6 +24,7 @@ void display() {
    // Draw player (red)
    glColor3f(1.0f, 0.0f, 0.0f);
    float playerSize = p.getSize();
+   glPushMatrix();
    glTranslatef(p.getPosX(), p.getPosY(), 0.0f);
    glBegin(GL_QUADS);
    glVertex2f(-playerSize / 2, -playerSize / 2);
@@ -31,11 +32,13 @@ void display() {
    glVertex2f(playerSize / 2, playerSize / 2);
    glVertex2f(-playerSize / 2, playerSize / 2);
    glEnd();
+   glPopMatrix();
 
    // Draw Enemy NPCs (yellow)
    glColor3f(1.0f, 1.0f, 0.0f);
    for (int i = 0; i < sizeof(enemies) / sizeof(enemies[0]); ++i) {
       float enemiesSize = enemies[i].getSize();
+      glPushMatrix();
       glTranslatef(enemies[i].getPosX(), enemies[i].getPosY(), 0.0f);
       glBegin(GL_QUADS);
       glVertex2f(-enemiesSize / 2, -enemiesSize / 2);
@@ -43,6 +46,7 @@ void display() {
       glVertex2f(enemiesSize / 2, enemiesSize / 2);
       glVertex2f(-enemiesSize / 2, enemiesSize / 2);
       glEnd();
+      glPopMatrix();
     }
 
    glutSwapBuffers();
