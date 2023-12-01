@@ -32,9 +32,10 @@ void display() {
    glEnd();
    glPopMatrix();
 
-   //Draw Enemy NPCs (yellow)
-   glColor3f(1.0f, 1.0f, 0.0f);
+   //Draw Enemy NPCs
    for (int i = 0; i < sizeof(enemies) / sizeof(enemies[0]); ++i) {
+      //Sun = Yellow, Ghost = White
+      glColor3f(getColorRed(), getColorGreen(), getColorBlue());
       float enemiesSize = enemies[i].getSize();
       glPushMatrix();
       glTranslatef(enemies[i].getPosX(), enemies[i].getPosY(), 0.0f);

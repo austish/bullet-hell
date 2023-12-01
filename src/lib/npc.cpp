@@ -36,9 +36,33 @@ void NPC::setNPCY(float Y){
     NPCPosY = Y;
 }
 
+float NPC::getColorRed(){
+    return colorRed;
+}
+
+float NPC::getColorGreen(){
+    return colorGreen;
+}
+
+float NPC::getColorBlue(){
+    return colorBlue;
+}
+
+
+
+
+
 void Sun::updateNPC(){
     setNPCY(getPosY() + getSpeed());
     if (getPosY() > 400.0f){
         setNPCY(-400.0f);
+    }
+}
+
+//Same movement as deafult parent NPC currently, maybe change to move in a circle if possible
+void Ghost::updateNPC(){
+    setNPCY(getPosY() + getSpeed());
+    if (getPosX() > 400.0f){
+        setNPCX(-400.0f);
     }
 }

@@ -9,6 +9,10 @@ class NPC{
         float NPCPosY;
         float NPCSize;
         float NPCSpeed;
+        float colorRed;
+        float colorGreen;
+        float colorBlue;
+
     public:
         NPC(float X, float Y, float size, float speed);
         void updateNPC();
@@ -18,14 +22,20 @@ class NPC{
         float getSpeed();
         void setNPCX(float X);
         void setNPCY(float Y);
+        float getColorRed();
+        float getColorGreen();
+        float getColorBlue();
 };
 
 class Sun : public NPC{
     private:
         float NPCSize = 20.0f;
         float NPCSpeed = 10.f;
-        //used to make different kinds of NPC different colors in main
-        string color = "Yellow";
+        //Yellow
+        colorRed = 1.0f;
+        colorGreen = 1.0f;
+        colorBlue = 0.0f;
+
     public:
         void updateNPC();
 };
@@ -34,8 +44,11 @@ class Ghost : public NPC{
     private:
         float NPCSize = 15.0f;
         float NPCSpeed = 15.f;
-        //used to make different kinds of NPC different colors in main
-        string color = "White";
+        //White
+        colorRed = 0.0f;
+        colorGreen = 0.0f;
+        colorBlue = 0.0f;
+
     public:
         void updateNPC();
 };
