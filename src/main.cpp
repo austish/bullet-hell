@@ -9,6 +9,14 @@ Player p;
 // Initialize game
 // void init() {
 //    // Initialize npcs, etc. here
+
+// Initialize NPCs
+NPC enemies[3] = {
+   NPC(0.0f, 100.0f, 30.0f, 1.0f),
+   NPC(100.0f, 0.0f, 30.0f, 1.0f),
+   NPC(200.0f, 100.0f, 30.0f, 1.0f)
+};
+
 // }
 
 // Display callback function
@@ -16,7 +24,8 @@ void display() {
    glClear(GL_COLOR_BUFFER_BIT);
    glLoadIdentity();
 
-   // Draw player
+   // Draw player (red)
+   glColor3f(1.0f, 0.0f, 0.0f);
    float playerSize = p.getSize();
    glTranslatef(p.getPosX(), p.getPosY(), 0.0f);
    glBegin(GL_QUADS);
@@ -25,6 +34,19 @@ void display() {
    glVertex2f(playerSize / 2, playerSize / 2);
    glVertex2f(-playerSize / 2, playerSize / 2);
    glEnd();
+
+   // Draw Enemy NPCs (yellow)
+   glColor3f(1.0f, 1.0f, 0.0f);
+   for (int i = 0; i < sizeof(enemies) / sizeof(enemies[0]); ++i) {
+      float enemiesSize = enemies[i].getSize();
+      glTranslatef(enemies[i].getPosX(), enemies[i].getPosY(), 0.0f);
+      glBegin(GL_QUADS);
+      glVertex2f(-enemiesSize / 2, -enemiesSize / 2);
+      glVertex2f(enemiesSize / 2, -enemiesSize / 2);
+      glVertex2f(enemiesSize / 2, enemiesSize / 2);
+      glVertex2f(-enemiesSize / 2, enemiesSize / 2);
+      glEnd();
+    }
 
    glutSwapBuffers();
 }
