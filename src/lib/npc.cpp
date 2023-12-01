@@ -23,3 +23,22 @@ float NPC::getPosY(){
 float NPC::getSize(){
     return NPCSize;
 }
+
+float NPC::getSpeed(){
+    return NPCSpeed;
+}
+
+void NPC::setNPCX(float X){
+    NPCPosX = X;
+}
+
+void NPC::setNPCY(float Y){
+    NPCPosY = Y;
+}
+
+void Sun::updateNPC(){
+    setNPCY(getPosY() + getSpeed());
+    if (getPosY() > 400.0f){
+        setNPCY(-400.0f);
+    }
+}
