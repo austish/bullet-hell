@@ -2,7 +2,7 @@
 #include <cstring>
 
 Player::Player() {
-    // set all keyStates to 0
+    //set all keyStates to 0
     memset(keyStates, 0, sizeof(keyStates));
 
     playerPosX = 0.0f;

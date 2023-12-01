@@ -4,24 +4,22 @@
 #include "lib/player.h"
 #include "lib/npc.h"
 
-// Initialize player
+//Initialize player
 Player p;
 
-// Initialize NPCs
+//Initialize NPCs
 NPC enemies[3] = {
    NPC(0.0f, 100.0f, 30.0f, 1.0f),
    NPC(100.0f, 0.0f, 30.0f, 1.0f),
    NPC(200.0f, 100.0f, 30.0f, 1.0f)
 };
 
-// }
-
-// Display callback function
+//Display callback function
 void display() {
    glClear(GL_COLOR_BUFFER_BIT);
    glLoadIdentity();
 
-   // Draw player (red)
+   //Draw player (red)
    glColor3f(1.0f, 0.0f, 0.0f);
    float playerSize = p.getSize();
    glPushMatrix();
@@ -34,7 +32,7 @@ void display() {
    glEnd();
    glPopMatrix();
 
-   // Draw Enemy NPCs (yellow)
+   //Draw Enemy NPCs (yellow)
    glColor3f(1.0f, 1.0f, 0.0f);
    for (int i = 0; i < sizeof(enemies) / sizeof(enemies[0]); ++i) {
       float enemiesSize = enemies[i].getSize();
@@ -52,7 +50,7 @@ void display() {
    glutSwapBuffers();
 }
 
-// Update function
+//Update function
 void update(int value) {
    p.updatePlayer();
 
@@ -64,30 +62,30 @@ void update(int value) {
    glutTimerFunc(16, update, 0); // Approx 60 FPS
 }
 
-// Keyboard button pressed
+//Keyboard button pressed
 void keyboardDown(unsigned char key, int x, int y) {
    p.updateKey(key, true);
 }
 
-// Keyboard button released 
+//Keyboard button released 
 void keyboardUp(unsigned char key, int x, int y) {
    p.updateKey(key, false);
 }
 
 int main(int argc, char** argv) {
-   // Initialize window and game
+   //Initialize window and game
    glutInit(&argc, argv);
    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
    glutInitWindowSize(1100, 800);
    glutCreateWindow("Temporary name");
 
-   // Handle display and keyboard updates
+   //Handle display and keyboard updates
    glutDisplayFunc(display);
    glutKeyboardFunc(keyboardDown);
    glutKeyboardUpFunc(keyboardUp);
-   glutTimerFunc(16, update, 0);    // ~60 fps
+   glutTimerFunc(16, update, 0);
 
-   // Projection
+   //Projection
    glMatrixMode(GL_PROJECTION);
    glLoadIdentity();
    glOrtho(-400, 400, -300, 300, -1.0, 1.0);

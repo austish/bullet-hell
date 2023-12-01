@@ -3,6 +3,7 @@
 NPC::NPC(float X, float Y, float size, float speed)
 : NPCPosX(X), NPCPosY(Y), NPCSize(size), NPCSpeed(speed) {}
 
+//NPC are moving to the right for now
 void NPC::updateNPC(){
     NPCPosX += NPCSpeed;
     //if NPC moves outside of range gets moved to other side
