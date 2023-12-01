@@ -14,11 +14,11 @@ Player::Player() {
 void Player::updatePlayer() {
     if (keyStates['w'])
         playerPosY += playerSpeed;
-    else if (keyStates['s'])
+    if (keyStates['s'])
         playerPosY -= playerSpeed;
-    else if (keyStates['a'])
+    if (keyStates['a'])
         playerPosX -= playerSpeed;
-    else if (keyStates['d'])
+    if (keyStates['d'])
         playerPosX += playerSpeed;
 }
 
