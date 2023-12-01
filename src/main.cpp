@@ -1,68 +1,49 @@
 #define GL_SILENCE_DEPRECATION
 #include <OpenGL/gl.h>
 #include <GLUT/glut.h>
-#include <cstring>
+#include "lib/player.h"
 
-// Player properties
-float playerPosX = 0.0f;
-float playerPosY = 0.0f;
-const float playerSize = 40.0f;
-const float playerSpeed = 5.0f;
-
-// Array to track state of each key
-bool keyStates[256];
+// Initialize player
+Player p;
 
 // Initialize game
-void init() {
-   // set all keyStates to 0
-   memset(keyStates, 0, sizeof(keyStates));
-   // Initialize player, npcs, etc. here
-}
-
-// Player movement
-void updatePlayer() {
-   if (keyStates['w'])
-      playerPosY += playerSpeed;
-   if (keyStates['s'])
-      playerPosY -= playerSpeed;
-   if (keyStates['a'])
-      playerPosX -= playerSpeed;
-   if (keyStates['d'])
-      playerPosX += playerSpeed;
-}
+// void init() {
+//    // Initialize npcs, etc. here
+// }
 
 // Display callback function
 void display() {
-    glClear(GL_COLOR_BUFFER_BIT);
-    glLoadIdentity();
+   glClear(GL_COLOR_BUFFER_BIT);
+   glLoadIdentity();
 
-    // Draw player
-    glTranslatef(playerPosX, playerPosY, 0.0f);
-    glBegin(GL_QUADS);
-        glVertex2f(-playerSize / 2, -playerSize / 2);
-        glVertex2f(playerSize / 2, -playerSize / 2);
-        glVertex2f(playerSize / 2, playerSize / 2);
-        glVertex2f(-playerSize / 2, playerSize / 2);
-    glEnd();
+   // Draw player
+   float playerSize = p.getSize();
+   glTranslatef(p.getPosX(), p.getPosY(), 0.0f);
+   glBegin(GL_QUADS);
+   glVertex2f(-playerSize / 2, -playerSize / 2);
+   glVertex2f(playerSize / 2, -playerSize / 2);
+   glVertex2f(playerSize / 2, playerSize / 2);
+   glVertex2f(-playerSize / 2, playerSize / 2);
+   glEnd();
 
-    glutSwapBuffers();
+   glutSwapBuffers();
 }
 
 // Update function
 void update(int value) {
-   updatePlayer();
+   p.updatePlayer();
    glutPostRedisplay();
    glutTimerFunc(16, update, 0); // Approx 60 FPS
 }
 
 // Keyboard button pressed
 void keyboardDown(unsigned char key, int x, int y) {
-    keyStates[key] = true;
+   p.updateKey(key, true);
 }
 
 // Keyboard button released 
 void keyboardUp(unsigned char key, int x, int y) {
-    keyStates[key] = false;
+   p.updateKey(key, false);
 }
 
 int main(int argc, char** argv) {
@@ -71,7 +52,7 @@ int main(int argc, char** argv) {
    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
    glutInitWindowSize(1100, 800);
    glutCreateWindow("Temporary name");
-   init();
+   // init();
 
    // Handle display and keyboard updates
    glutDisplayFunc(display);
