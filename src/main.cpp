@@ -1,6 +1,5 @@
 #define GL_SILENCE_DEPRECATION
-#include <OpenGL/gl.h>
-#include <GLUT/glut.h>
+#include <GL/glut.h>
 #include "lib/player.h"
 #include "lib/npc.h"
 
