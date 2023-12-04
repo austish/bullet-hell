@@ -12,6 +12,7 @@ Player::Player() {
     playerSpeed = 3.0f;
 }
 
+// Player movement
 void Player::updatePlayer() {
     if (keyStates['w'] && playerPosY < boundaryTop - playerSize / 2) 
         playerPosY += playerSpeed;
@@ -35,6 +36,7 @@ float Player::getSize() {
     return playerSize;
 }
 
+// Update movement keystates
 void Player::updateKey(unsigned char key, bool value) {
     keyStates[key] = value;
 }
