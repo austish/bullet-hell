@@ -1,6 +1,5 @@
 #include "npc.h"
-#include "variables.h"
-
+#include "borders.h"
 
 NPC::NPC(float X, float Y, float size, float speed)
 : posX(X), posY(Y), size(size), speed(speed) {}
@@ -15,6 +14,7 @@ void NPC::updateNPC(){
 }
 
 void NPC::drawNPC(){
+    glColor3f(1.0f, 1.0f, 0.0f);
     glPushMatrix();
     glTranslatef(posX, posY, 0.0f);
     glBegin(GL_QUADS);

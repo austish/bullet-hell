@@ -1,6 +1,18 @@
+#ifdef __APPLE__ // Check if the target OS is macOS
+#define GL_SILENCE_DEPRECATION
+#include <OpenGL/gl.h>
+#include <GLUT/glut.h> 
+#else
+#include <GL/glut.h>
+#endif
 #ifndef BORDERS_H
 #define BORDERS_H
-#include "variables.h"
+
+const extern float borderLeft;
+const extern float borderRight;
+const extern float borderTop;
+const extern float borderBottom;
+const extern float UIheight;
 
 void drawBorders();
 

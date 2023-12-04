@@ -3,8 +3,9 @@
 // Initialize borders
 const extern float borderLeft = -400.0f;
 const extern float borderRight = 400.0f;
-const extern float borderTop = 300.0f;
+const extern float borderTop = 250.0f;
 const extern float borderBottom = -300.0f;
+const extern float UIheight = 50.0f;
 
 // Draw borders (white)
 void drawBorders() {
