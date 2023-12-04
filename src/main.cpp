@@ -9,7 +9,6 @@
 #include "lib/player.h"
 #include "lib/npc.h"
 #include "lib/borders.h"
-#include <string>
 
 // Keyboard button pressed
 void keyboardDown(unsigned char key, int x, int y);
