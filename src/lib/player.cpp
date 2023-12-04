@@ -14,13 +14,13 @@ Player::Player() {
 
 // Player movement
 void Player::updatePlayer() {
-    if (keyStates['w'] && playerPosY < boundaryTop - playerSize / 2) 
+    if (keyStates['w'] && playerPosY < borderTop - playerSize / 2) 
         playerPosY += playerSpeed;
-    if (keyStates['s'] && playerPosY > boundaryBottom + playerSize / 2) 
+    if (keyStates['s'] && playerPosY > borderBottom + playerSize / 2) 
         playerPosY -= playerSpeed;
-    if (keyStates['a'] && playerPosX > boundaryLeft + playerSize / 2) 
+    if (keyStates['a'] && playerPosX > borderLeft + playerSize / 2) 
         playerPosX -= playerSpeed;
-    if (keyStates['d'] && playerPosX < boundaryRight - playerSize / 2) 
+    if (keyStates['d'] && playerPosX < borderRight - playerSize / 2) 
         playerPosX += playerSpeed;
 }
 
@@ -39,4 +39,18 @@ float Player::getSize() {
 // Update movement keystates
 void Player::updateKey(unsigned char key, bool value) {
     keyStates[key] = value;
+}
+
+//Draw player (red)
+void Player::drawPlayer() {
+   glColor3f(1.0f, 0.0f, 0.0f);                       // Set color to red
+   glPushMatrix();                                    // Push player matrix
+   glTranslatef(playerPosX, playerPosY, 0.0f);
+   glBegin(GL_QUADS);
+   glVertex2f(-playerSize / 2, -playerSize / 2);
+   glVertex2f(playerSize / 2, -playerSize / 2);
+   glVertex2f(playerSize / 2, playerSize / 2);
+   glVertex2f(-playerSize / 2, playerSize / 2);
+   glEnd();
+   glPopMatrix();                                    // Pop player matrix
 }

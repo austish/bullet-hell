@@ -8,7 +8,7 @@ NPC::NPC(float X, float Y, float size, float speed)
 void NPC::updateNPC(){
     NPCPosX += NPCSpeed;
     //if NPC moves outside of range gets moved to other side
-    if (NPCPosX > boundaryRight - NPCSize / 2){
+    if (NPCPosX > borderRight - NPCSize / 2){
         NPCPosX = -400.0f;
     }
 }
@@ -23,4 +23,16 @@ float NPC::getPosY(){
 
 float NPC::getSize(){
     return NPCSize;
+}
+
+void NPC::drawNPC(){
+    glPushMatrix();
+    glTranslatef(NPCPosX, NPCPosY, 0.0f);
+    glBegin(GL_QUADS);
+    glVertex2f(-NPCSize / 2, -NPCSize / 2);
+    glVertex2f(NPCSize / 2, -NPCSize / 2);
+    glVertex2f(NPCSize / 2, NPCSize / 2);
+    glVertex2f(-NPCSize / 2, NPCSize / 2);
+    glEnd();
+    glPopMatrix();
 }
