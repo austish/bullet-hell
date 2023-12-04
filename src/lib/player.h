@@ -18,6 +18,8 @@ class Player {
         float getSize();
         // Update movement keystates
         void updateKey(unsigned char key, bool value);
+        void drawPlayer();
 };
+
 
 #endif
