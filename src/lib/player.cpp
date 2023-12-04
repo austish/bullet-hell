@@ -1,10 +1,6 @@
 #include "player.h"
+#include "variables.h"
 #include <cstring>
-
-const extern float boundaryLeft = -400.0f;
-const extern float boundaryRight = 400.0f;
-const extern float boundaryTop = 300.0f;
-const extern float boundaryBottom = -300.0f;
 
 Player::Player() {
     //set all keyStates to 0
@@ -16,6 +12,7 @@ Player::Player() {
     playerSpeed = 3.0f;
 }
 
+// Player movement
 void Player::updatePlayer() {
     if (keyStates['w'] && playerPosY < boundaryTop - playerSize / 2) 
         playerPosY += playerSpeed;
@@ -39,6 +36,7 @@ float Player::getSize() {
     return playerSize;
 }
 
+// Update movement keystates
 void Player::updateKey(unsigned char key, bool value) {
     keyStates[key] = value;
 }
