@@ -29,7 +29,7 @@ void Player::updateKey(unsigned char key, bool value) {
     keyStates[key] = value;
 }
 
-//Draw player (red)
+//Draw player
 void Player::drawPlayer() {
    glColor3f(1.0f, 0.0f, 0.0f);                       // Set color to red
    glPushMatrix();                                    // Push player matrix
