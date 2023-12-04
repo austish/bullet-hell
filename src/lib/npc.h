@@ -13,6 +13,7 @@ class NPC{
         float getPosX();
         float getPosY();
         float getSize();
+        void drawNPC();
 };
 
 #endif

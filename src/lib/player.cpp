@@ -40,3 +40,17 @@ float Player::getSize() {
 void Player::updateKey(unsigned char key, bool value) {
     keyStates[key] = value;
 }
+
+//Draw player (red)
+void Player::drawPlayer() {
+   glColor3f(1.0f, 0.0f, 0.0f);                       // Set color to red
+   glPushMatrix();                                    // Push player matrix
+   glTranslatef(playerPosX, playerPosY, 0.0f);
+   glBegin(GL_QUADS);
+   glVertex2f(-playerSize / 2, -playerSize / 2);
+   glVertex2f(playerSize / 2, -playerSize / 2);
+   glVertex2f(playerSize / 2, playerSize / 2);
+   glVertex2f(-playerSize / 2, playerSize / 2);
+   glEnd();
+   glPopMatrix();                                    // Pop player matrix
+}

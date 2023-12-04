@@ -24,3 +24,15 @@ float NPC::getPosY(){
 float NPC::getSize(){
     return NPCSize;
 }
+
+void NPC::drawNPC(){
+    glPushMatrix();
+    glTranslatef(NPCPosX, NPCPosY, 0.0f);
+    glBegin(GL_QUADS);
+    glVertex2f(-NPCSize / 2, -NPCSize / 2);
+    glVertex2f(NPCSize / 2, -NPCSize / 2);
+    glVertex2f(NPCSize / 2, NPCSize / 2);
+    glVertex2f(-NPCSize / 2, NPCSize / 2);
+    glEnd();
+    glPopMatrix();
+}
