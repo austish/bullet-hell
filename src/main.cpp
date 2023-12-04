@@ -8,6 +8,7 @@
 #include "lib/variables.h"
 #include "lib/player.h"
 #include "lib/npc.h"
+#include "lib/borders.h"
 #include <string>
 
 // Keyboard button pressed
@@ -26,12 +27,6 @@ NPC enemies[3] = {
    NPC(100.0f, 0.0f, 30.0f, 1.0f),
    NPC(200.0f, 100.0f, 30.0f, 1.0f)
 };
-
-// Initialize boundaries
-const extern float borderLeft = -400.0f;
-const extern float borderRight = 400.0f;
-const extern float borderTop = 300.0f;
-const extern float borderBottom = -300.0f;
 
 //Display callback function
 void display() {
