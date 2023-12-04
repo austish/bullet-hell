@@ -1,5 +1,5 @@
 #include "player.h"
-#include "variables.h"
+#include "borders.h"
 #include <cstring>
 
 Player::Player() {

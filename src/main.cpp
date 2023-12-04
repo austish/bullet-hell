@@ -5,12 +5,19 @@
 #else
 #include <GL/glut.h>
 #endif
-#include "lib/variables.h"
 #include "lib/player.h"
 #include "lib/npc.h"
 #include "lib/borders.h"
 #include <cstdlib>
 #include <ctime>
+#include <string>
+
+void drawText(const std::string &text, float x, float y) {
+    glRasterPos2f(x, y);
+    for (char c : text) {
+        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, c);
+    }
+}
 
 // Keyboard button pressed
 void keyboardDown(unsigned char key, int x, int y);
@@ -36,6 +43,24 @@ void display() {
    for (auto &enemy: enemies) {
         enemy.drawNPC();
    }
+
+   // Draw UI background
+   glColor3f(0.5f, 0.5f, 0.5f); // Grey background
+   glBegin(GL_QUADS);
+   glVertex2f(borderLeft, borderTop + UIheight);
+   glVertex2f(borderRight, borderTop + UIheight); // Account for UI height
+   glVertex2f(borderRight, borderTop);
+   glVertex2f(borderLeft, borderTop);
+   glEnd();
+
+   // Set color for text
+   glColor3f(1.0f, 1.0f, 1.0f); // White text
+
+   // Draw text at the top left corner
+   drawText("Left: 123", borderLeft + 10, borderTop + UIheight - 30);
+
+   // Draw text at the top right corner
+   drawText("Right: 456", borderRight - 100, borderTop + UIheight - 30);
 
    glutSwapBuffers();
 }
@@ -82,12 +107,12 @@ void update(int value) {
         enemy.updateNPC();
    }
 
-   // Update spawn timer
+   // Spawn NPCs
    spawnTimer += 16.0f; // Increment by 16 milliseconds (time per frame)
    if (spawnTimer >= 1000.0f) {  // Spawn every second
       // Random position within borders
-      float x = -400.0f + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (800.0f))); // Random X
-      float y = -300.0f + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (600.0f))); // Random Y
+      float x = borderLeft + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (borderRight + abs(borderLeft)))); // Random X
+      float y = borderBottom+ static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (borderTop + abs(borderBottom)))); // Random Y
 
       // Spawn new NPC
       enemies.push_back(NPC(x, y, 30.0f, 1.0f));
