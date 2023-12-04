@@ -1,10 +1,6 @@
 #include "player.h"
+#include "variables.h"
 #include <cstring>
-
-const extern float boundaryLeft = -400.0f;
-const extern float boundaryRight = 400.0f;
-const extern float boundaryTop = 300.0f;
-const extern float boundaryBottom = -300.0f;
 
 Player::Player() {
     //set all keyStates to 0

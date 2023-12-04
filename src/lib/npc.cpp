@@ -1,4 +1,5 @@
 #include "npc.h"
+#include "variables.h"
 
 NPC::NPC(float X, float Y, float size, float speed)
 : NPCPosX(X), NPCPosY(Y), NPCSize(size), NPCSpeed(speed) {}
@@ -7,7 +8,7 @@ NPC::NPC(float X, float Y, float size, float speed)
 void NPC::updateNPC(){
     NPCPosX += NPCSpeed;
     //if NPC moves outside of range gets moved to other side
-    if (NPCPosX > 400.0f){
+    if (NPCPosX > boundaryRight - NPCSize / 2){
         NPCPosX = -400.0f;
     }
 }

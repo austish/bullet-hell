@@ -5,26 +5,32 @@
 #else
 #include <GL/glut.h>
 #endif
+#include "lib/variables.h"
 #include "lib/player.h"
 #include "lib/npc.h"
-#include "lib/variables.h"
 
-//Keyboard button pressed
+// Keyboard button pressed
 void keyboardDown(unsigned char key, int x, int y);
-//Keyboard button released 
+// Keyboard button released 
 void keyboardUp(unsigned char key, int x, int y);
 //Update function
 void update(int value);
 
-//Initialize player
+// Initialize player
 Player p;
 
-//Initialize NPCs
+// Initialize NPCs
 NPC enemies[3] = {
    NPC(0.0f, 100.0f, 30.0f, 1.0f),
    NPC(100.0f, 0.0f, 30.0f, 1.0f),
    NPC(200.0f, 100.0f, 30.0f, 1.0f)
 };
+
+// Initialize boundaries
+const extern float boundaryLeft = -400.0f;
+const extern float boundaryRight = 400.0f;
+const extern float boundaryTop = 300.0f;
+const extern float boundaryBottom = -300.0f;
 
 //Display callback function
 void display() {
