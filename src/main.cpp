@@ -8,6 +8,7 @@
 #include "lib/variables.h"
 #include "lib/player.h"
 #include "lib/npc.h"
+#include <string>
 
 // Keyboard button pressed
 void keyboardDown(unsigned char key, int x, int y);
@@ -27,10 +28,10 @@ NPC enemies[3] = {
 };
 
 // Initialize boundaries
-const extern float boundaryLeft = -400.0f;
-const extern float boundaryRight = 400.0f;
-const extern float boundaryTop = 300.0f;
-const extern float boundaryBottom = -300.0f;
+const extern float borderLeft = -400.0f;
+const extern float borderRight = 400.0f;
+const extern float borderTop = 300.0f;
+const extern float borderBottom = -300.0f;
 
 //Display callback function
 void display() {
@@ -38,21 +39,21 @@ void display() {
    glLoadIdentity();
 
    // Draw boundaries (white)
-    glColor3f(1.0f, 1.0f, 1.0f); // Set boundary color to red
-    glBegin(GL_LINES);
-        // Top boundary
-        glVertex2f(boundaryLeft, boundaryTop);
-        glVertex2f(boundaryRight, boundaryTop);
-        // Bottom boundary
-        glVertex2f(boundaryLeft, boundaryBottom);
-        glVertex2f(boundaryRight, boundaryBottom);
-        // Left boundary
-        glVertex2f(boundaryLeft, boundaryBottom);
-        glVertex2f(boundaryLeft, boundaryTop);
-        // Right boundary
-        glVertex2f(boundaryRight, boundaryBottom);
-        glVertex2f(boundaryRight, boundaryTop);
-    glEnd();
+   glColor3f(1.0f, 1.0f, 1.0f); // Set border color to red
+   glBegin(GL_LINES);
+   // Top border
+   glVertex2f(borderLeft, borderTop);
+   glVertex2f(borderRight, borderTop);
+   // Bottom border
+   glVertex2f(borderLeft, borderBottom);
+   glVertex2f(borderRight, borderBottom);
+   // Left border
+   glVertex2f(borderLeft, borderBottom);
+   glVertex2f(borderLeft, borderTop);
+   // Right border
+   glVertex2f(borderRight, borderBottom);
+   glVertex2f(borderRight, borderTop);
+   glEnd();
 
    //Draw player (red)
    glColor3f(1.0f, 0.0f, 0.0f);                       // Set color to red

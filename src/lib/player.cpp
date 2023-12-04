@@ -14,13 +14,13 @@ Player::Player() {
 
 // Player movement
 void Player::updatePlayer() {
-    if (keyStates['w'] && playerPosY < boundaryTop - playerSize / 2) 
+    if (keyStates['w'] && playerPosY < borderTop - playerSize / 2) 
         playerPosY += playerSpeed;
-    if (keyStates['s'] && playerPosY > boundaryBottom + playerSize / 2) 
+    if (keyStates['s'] && playerPosY > borderBottom + playerSize / 2) 
         playerPosY -= playerSpeed;
-    if (keyStates['a'] && playerPosX > boundaryLeft + playerSize / 2) 
+    if (keyStates['a'] && playerPosX > borderLeft + playerSize / 2) 
         playerPosX -= playerSpeed;
-    if (keyStates['d'] && playerPosX < boundaryRight - playerSize / 2) 
+    if (keyStates['d'] && playerPosX < borderRight - playerSize / 2) 
         playerPosX += playerSpeed;
 }
 
