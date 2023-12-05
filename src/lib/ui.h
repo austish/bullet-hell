@@ -10,10 +10,9 @@ class UI {
     public:
         UI();
         void drawUI();
-        void drawText(const std::string &text, float x, float y);
         void updateHealth(int amount);
         void updateScore(int amount);
 };
-
+void drawText(const std::string &text, float x, float y);
 
 #endif

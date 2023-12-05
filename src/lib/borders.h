@@ -1,4 +1,5 @@
-#ifdef __APPLE__ // Check if the target OS is macOS
+// Border variables and functions
+#ifdef __APPLE__ // Check os
 #define GL_SILENCE_DEPRECATION
 #include <OpenGL/gl.h>
 #include <GLUT/glut.h> 
