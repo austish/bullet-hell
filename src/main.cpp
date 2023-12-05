@@ -17,16 +17,27 @@
 void keyboardDown(unsigned char key, int x, int y);
 // Keyboard button released 
 void keyboardUp(unsigned char key, int x, int y);
-//Update function
+// Update function
 void update(int value);
-//Display callback function
+// Display callback function
 void display();
+// Mouse functionality
+void mouse(int button, int state, int x, int y);
 
 // Initialize game
 Player p;
 UI ui;
 std::vector<NPC> enemies;
 float spawnTimer = 0.0f; // timer for spawning NPCs
+
+// Menu or game state
+enum AppState {
+    MENU,
+    GAME
+};
+AppState currentState = MENU;
+
+
 
 int main(int argc, char** argv) {
    //Initialize window and game
@@ -38,6 +49,7 @@ int main(int argc, char** argv) {
 
    //Handle display and keyboard updates
    glutDisplayFunc(display);
+   glutMouseFunc(mouse);
    glutKeyboardFunc(keyboardDown);
    glutKeyboardUpFunc(keyboardUp);
    glutTimerFunc(16, update, 0);
@@ -91,18 +103,37 @@ void update(int value) {
    glutTimerFunc(16, update, 0); // Approx 60 FPS
 }
 
-//Display callback function
+// Display callback function
 void display() {
    glClear(GL_COLOR_BUFFER_BIT);
    glLoadIdentity();
 
-   // Draw functions
-   drawBorders();
-   p.drawPlayer();
-   for (auto &enemy: enemies) {
-        enemy.drawNPC();
+   if (currentState == MENU) {
+      displayMenu();
+    } else if (currentState == GAME) {
+      drawBorders();
+      p.drawPlayer();
+      for (auto &enemy: enemies) {
+         enemy.drawNPC();
+      }
+      ui.drawUI();
    }
-   ui.drawUI();
 
    glutSwapBuffers();
+}
+
+// Mouse functionality
+void mouse(int button, int state, int x, int y) {
+   if (currentState == MENU) {
+      if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
+         // windowHeight should be set to 800
+         y = 800 - y;
+
+         // Check if the click is within the start button bounds
+         if (x >= startButton.x && x <= startButton.x + startButton.width &&
+               y >= startButton.y && y <= startButton.y + startButton.height) {
+               currentState = GAME;
+         }
+      }
+   }
 }
