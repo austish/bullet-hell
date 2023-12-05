@@ -1,15 +1,9 @@
-// Menu 
+// Menu and start button
 #ifndef MENU_H
 #define MENU_H
+#include "player.h"
 #include <string>
 
-struct Button {
-    float x, y, width, height;
-    std::string text;
-};
-
-void drawButton(const Button& button);
-void displayMenu();
-void mouse(int button, int state, int x, int y);
+void displayMenu(Player p);
 
 #endif

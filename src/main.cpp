@@ -9,9 +9,9 @@
 #include "lib/npc.h"
 #include "lib/borders.h"
 #include "lib/ui.h"
+#include "lib/menu.h"
 #include <cstdlib>
 #include <ctime>
-
 
 // Keyboard button pressed
 void keyboardDown(unsigned char key, int x, int y);
@@ -21,8 +21,6 @@ void keyboardUp(unsigned char key, int x, int y);
 void update(int value);
 // Display callback function
 void display();
-// Mouse functionality
-void mouse(int button, int state, int x, int y);
 
 // Initialize game
 Player p;
@@ -30,14 +28,12 @@ UI ui;
 std::vector<NPC> enemies;
 float spawnTimer = 0.0f; // timer for spawning NPCs
 
-// Menu or game state
+// State of game
 enum AppState {
     MENU,
     GAME
 };
 AppState currentState = MENU;
-
-
 
 int main(int argc, char** argv) {
    //Initialize window and game
@@ -49,7 +45,6 @@ int main(int argc, char** argv) {
 
    //Handle display and keyboard updates
    glutDisplayFunc(display);
-   glutMouseFunc(mouse);
    glutKeyboardFunc(keyboardDown);
    glutKeyboardUpFunc(keyboardUp);
    glutTimerFunc(16, update, 0);
@@ -66,6 +61,9 @@ int main(int argc, char** argv) {
 
 //Keyboard button pressed
 void keyboardDown(unsigned char key, int x, int y) {
+   if (currentState == MENU && key == ' ') {
+      currentState = GAME;
+   }
    p.updateKey(key, true);
 }
 
@@ -77,26 +75,29 @@ void keyboardUp(unsigned char key, int x, int y) {
 //Update function
 void update(int value) {
    p.updatePlayer();
-   // TEMPORARY update calls. should be called whenever health or score changes
-   ui.updateHealth(1);
-   ui.updateScore(1);
+   // Check if in game state
+   if (currentState == GAME) {
+      // TEMPORARY update calls. should be called whenever health or score changes
+      ui.updateHealth(1);
+      ui.updateScore(1);
 
-   for (auto &enemy: enemies) {
-        enemy.updateNPC();
-   }
+      for (auto &enemy: enemies) {
+         enemy.updateNPC();
+      }
 
-   // Spawn NPCs
-   spawnTimer += 16.0f; // Increment by 16 milliseconds (time per frame)
-   if (spawnTimer >= 1000.0f) {  // Spawn every second
-      // Random position within borders
-      float x = borderLeft + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (borderRight + abs(borderLeft)))); // Random X
-      float y = borderBottom + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (borderTop + abs(borderBottom)))); // Random Y
+      // Spawn NPCs
+      spawnTimer += 16.0f; // Increment by 16 milliseconds (time per frame)
+      if (spawnTimer >= 1000.0f) {  // Spawn every second
+         // Random position within borders
+         float x = borderLeft + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (borderRight + abs(borderLeft)))); // Random X
+         float y = borderBottom + 40 + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (borderTop + abs(borderBottom) - 50))); // Random Y
 
-      // Spawn new NPC
-      enemies.push_back(NPC(x, y, 30.0f, 1.0f));
+         // Spawn new NPC
+         enemies.push_back(NPC(x, y, 30.0f, 1.0f));
 
-      // Reset timer
-      spawnTimer = 0.0f;
+         // Reset timer
+         spawnTimer = 0.0f;
+      }
    }
 
    glutPostRedisplay();
@@ -108,9 +109,11 @@ void display() {
    glClear(GL_COLOR_BUFFER_BIT);
    glLoadIdentity();
 
+   // Menu
    if (currentState == MENU) {
-      displayMenu();
-    } else if (currentState == GAME) {
+      displayMenu(p);
+   // Game
+   } else if (currentState == GAME) {
       drawBorders();
       p.drawPlayer();
       for (auto &enemy: enemies) {
@@ -120,20 +123,4 @@ void display() {
    }
 
    glutSwapBuffers();
-}
-
-// Mouse functionality
-void mouse(int button, int state, int x, int y) {
-   if (currentState == MENU) {
-      if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
-         // windowHeight should be set to 800
-         y = 800 - y;
-
-         // Check if the click is within the start button bounds
-         if (x >= startButton.x && x <= startButton.x + startButton.width &&
-               y >= startButton.y && y <= startButton.y + startButton.height) {
-               currentState = GAME;
-         }
-      }
-   }
 }
