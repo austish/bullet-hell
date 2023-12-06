@@ -12,6 +12,7 @@
 #include "lib/menu.h"
 #include <cstdlib>
 #include <ctime>
+#include <vector>
 
 // Keyboard button pressed
 void keyboardDown(unsigned char key, int x, int y);
