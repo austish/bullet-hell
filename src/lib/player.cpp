@@ -48,6 +48,13 @@ int Player::getHealth() {
     return health;
 }
 
+void Player::resetPlayer() {
+    posX = 0.0f;
+    posY = 0.0f;
+    score = 0;
+    health = 0;
+}
+
 //Draw player
 void Player::drawPlayer() {
    glColor3f(1.0f, 0.0f, 0.0f);                       // Set color to red

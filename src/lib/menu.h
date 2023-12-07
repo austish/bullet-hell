@@ -5,6 +5,13 @@
 #include "ui.h"
 #include <string>
 
+// State of game
+enum GameState {
+    START,
+    GAME,
+    END
+};
+
 void displayStart(Player p);
 void displayEnd(Player p);
 

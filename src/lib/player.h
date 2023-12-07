@@ -21,6 +21,7 @@ class Player {
         void updateScore(int amount);
         int getScore();
         int getHealth();
+        void resetPlayer();
         void drawPlayer();
 };
 

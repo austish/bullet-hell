@@ -24,19 +24,13 @@ void update(int value);
 // Display callback function
 void display();
 
-// Initialize game
+// Initialize variables
 Player p;
 std::vector<NPC> enemies;
 float spawnTimer = 0.0f; // timer for spawning NPCs
 bool leaderboardUpdated = false;
-
-// State of game
-enum AppState {
-    START,
-    GAME,
-    END
-};
-AppState currentState = END;
+bool gameEnded = false;
+GameState currentState = END;
 
 int main(int argc, char** argv) {
    //Initialize window and game
@@ -116,6 +110,13 @@ void display() {
       displayStart(p);
    // Game
    } else if (currentState == GAME) {
+      // Reset game
+      if (gameEnded) {
+         p.resetPlayer();
+         enemies.clear();
+         spawnTimer = 0.0f;
+         gameEnded = false;
+      }
       leaderboardUpdated = false;
       drawBorders();
       p.drawPlayer();
@@ -125,7 +126,9 @@ void display() {
       drawUI(p);
    // End
    } else if (currentState == END) {
+      gameEnded = true;
       if (!leaderboardUpdated) {
+         p.updateScore(2000);
          updateLeaderboard(p.getScore());
          leaderboardUpdated = true;
       }
