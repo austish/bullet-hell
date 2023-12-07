@@ -31,10 +31,11 @@ float spawnTimer = 0.0f; // timer for spawning NPCs
 
 // State of game
 enum AppState {
-    MENU,
-    GAME
+    START,
+    GAME,
+    END
 };
-AppState currentState = MENU;
+AppState currentState = END;
 
 int main(int argc, char** argv) {
    //Initialize window and game
@@ -62,9 +63,8 @@ int main(int argc, char** argv) {
 
 //Keyboard button pressed
 void keyboardDown(unsigned char key, int x, int y) {
-   if (currentState == MENU && key == ' ') {
+   if ((currentState == START || currentState == END) && key == ' ')
       currentState = GAME;
-   }
    p.updateKey(key, true);
 }
 
@@ -111,8 +111,8 @@ void display() {
    glLoadIdentity();
 
    // Menu
-   if (currentState == MENU) {
-      displayMenu(p);
+   if (currentState == START) {
+      displayStart(p);
    // Game
    } else if (currentState == GAME) {
       drawBorders();
@@ -121,6 +121,8 @@ void display() {
          enemy.drawNPC();
       }
       ui.drawUI();
+   } else if (currentState == END) {
+      displayEnd(p, ui);
    }
 
    glutSwapBuffers();

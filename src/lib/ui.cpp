@@ -31,6 +31,10 @@ void UI::updateScore(int amount) {
     score += amount;
 }
 
+int UI::getScore() {
+    return score;
+}
+
 void drawText(const std::string &text, float x, float y) {
     glRasterPos2f(x, y);
     for (char c : text) {
