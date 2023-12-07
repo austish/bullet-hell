@@ -1,4 +1,5 @@
 #include "player.h"
+#include "borders.h"
 #include <cstring>
 #include <cmath>
 #include <algorithm>
@@ -7,47 +8,27 @@ Player::Player() {
     //set all keyStates to 0
     memset(keyStates, 0, sizeof(keyStates));
 
-<<<<<<< Updated upstream
-    playerPosX = 0.0f;
-    playerPosY = 0.0f;
-    playerSize = 40.0f;
-    playerSpeed = 5.0f;
-=======
     posX = 0.0f;
     posY = 0.0f;
     size = 30.0f;
     speed = 3.0f;
-    bulletSpeed = 5.0f;
->>>>>>> Stashed changes
 }
 
+// Player movement
 void Player::updatePlayer() {
-    if (keyStates['w'])
-        playerPosY += playerSpeed;
-    if (keyStates['s'])
-        playerPosY -= playerSpeed;
-    if (keyStates['a'])
-        playerPosX -= playerSpeed;
-    if (keyStates['d'])
-        playerPosX += playerSpeed;
+    if (keyStates['w'] && posY < borderTop - size / 2) 
+        posY += speed;
+    if (keyStates['s'] && posY > borderBottom + size / 2) 
+        posY -= speed;
+    if (keyStates['a'] && posX > borderLeft + size / 2) 
+        posX -= speed;
+    if (keyStates['d'] && posX < borderRight - size / 2) 
+        posX += speed;
 }
 
-float Player::getPosX() {
-    return playerPosX;
-}
-
-float Player::getPosY() {
-    return playerPosY;
-}
-
-float Player::getSize() {
-    return playerSize;
-}
-
+// Update movement keystates
 void Player::updateKey(unsigned char key, bool value) {
     keyStates[key] = value;
-<<<<<<< Updated upstream
-=======
 }
 
 //Draw player
@@ -64,20 +45,22 @@ void Player::drawPlayer() {
    glPopMatrix();                                    // Pop player matrix
 }
 
-void Player::shootBullet(float mouseX, float mouseY) {
-    float directionX = mouseX - posX;
-    float directionY = mouseY - posY;
-    float magnitude = sqrt(directionX * directionX + directionY * directionY);
+void Player::shootBullet(int mouseX, int mouseY) {
+    const float BULLET_SPEED = 5.0f;  // Adjust the speed as needed
 
-    if (magnitude != 0) {
-        directionX /= magnitude;
-        directionY /= magnitude;
+    // Calculate the direction from player to the cursor (normalized)
+    float directionX = static_cast<float>(mouseX - posX);
+    float directionY = static_cast<float>(mouseY - posY);
+    float length = std::sqrt(directionX * directionX + directionY * directionY);
 
-        Bullet newBullet(posX, posY, bulletSpeed, directionX, directionY);
-        bullets.push_back(newBullet);
+    if (length != 0) {
+        directionX /= length;
+        directionY /= length;
+
+        // Create a bullet and add it to the bullets vector
+        bullets.push_back(Bullet(posX, posY, BULLET_SPEED, directionX, directionY));
     }
 }
-
 
 std::vector<Bullet>& Player::getBullets() {
     return bullets;
@@ -93,5 +76,4 @@ float Player::getPosX(){
 
 float Player::getPosY(){
     return posY;
->>>>>>> Stashed changes
 }
