@@ -24,19 +24,13 @@ void update(int value);
 // Display callback function
 void display();
 
-// Initialize game
+// Initialize variables
 Player p;
 std::vector<NPC> enemies;
 float spawnTimer = 0.0f; // timer for spawning NPCs
 bool leaderboardUpdated = false;
-
-// State of game
-enum AppState {
-    START,
-    GAME,
-    END
-};
-AppState currentState = START;
+bool gameEnded = false;
+GameState currentState = START;
 
 int main(int argc, char** argv) {
    //Initialize window and game
@@ -82,8 +76,7 @@ void update(int value) {
    float playerPosY = p.getY();
    if (currentState == GAME) {
       // TEMPORARY update calls. should be called whenever health or score changes
-      p.updateHealth(1);
-      p.updateScore(1);
+      // p.updateHealth(1);
 
       for (auto &enemy: enemies) {
          enemy.updateNPC(playerPosX, playerPosY);
@@ -108,6 +101,7 @@ void update(int value) {
       while (it != enemies.end()) {
         if (it->checkCollisionWithPlayer(p.getX(), p.getY(), p.getSize())) {
             it = enemies.erase(it);  // Remove NPC if collision detected
+            p.updateScore(100);
         } else {
             ++it;
         }
@@ -128,6 +122,13 @@ void display() {
       displayStart(p);
    // Game
    } else if (currentState == GAME) {
+      // Reset game
+      if (gameEnded) {
+         p.resetPlayer();
+         enemies.clear();
+         spawnTimer = 0.0f;
+         gameEnded = false;
+      }
       leaderboardUpdated = false;
       drawBorders();
       p.drawPlayer();
@@ -137,6 +138,7 @@ void display() {
       drawUI(p);
    // End
    } else if (currentState == END) {
+      gameEnded = true;
       if (!leaderboardUpdated) {
          updateLeaderboard(p.getScore());
          leaderboardUpdated = true;

@@ -49,6 +49,13 @@ int Player::getHealth() {
     return health;
 }
 
+void Player::resetPlayer() {
+    posX = 0.0f;
+    posY = 0.0f;
+    score = 0;
+    health = 0;
+}
+
 //Draw player
 void Player::drawPlayer() {
     // Body (Circle)
