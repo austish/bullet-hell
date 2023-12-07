@@ -36,7 +36,7 @@ enum AppState {
     GAME,
     END
 };
-AppState currentState = END;
+AppState currentState = START;
 
 int main(int argc, char** argv) {
    //Initialize window and game
@@ -78,8 +78,8 @@ void keyboardUp(unsigned char key, int x, int y) {
 void update(int value) {
    p.updatePlayer();
    // Check if in game state
-    float playerPosX = p.getX();
-    float playerPosY = p.getY();
+   float playerPosX = p.getX();
+   float playerPosY = p.getY();
    if (currentState == GAME) {
       // TEMPORARY update calls. should be called whenever health or score changes
       p.updateHealth(1);
