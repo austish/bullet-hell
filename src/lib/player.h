@@ -22,6 +22,9 @@ class Player {
         int getScore();
         int getHealth();
         void drawPlayer();
+        float getX() const;
+        float getY() const;
+        float getSize() const;
 };
 
 
