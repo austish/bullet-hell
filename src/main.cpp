@@ -128,7 +128,6 @@ void display() {
    } else if (currentState == END) {
       gameEnded = true;
       if (!leaderboardUpdated) {
-         p.updateScore(2000);
          updateLeaderboard(p.getScore());
          leaderboardUpdated = true;
       }
