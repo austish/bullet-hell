@@ -10,8 +10,10 @@
 #include "lib/borders.h"
 #include "lib/ui.h"
 #include "lib/menu.h"
+#include "lib/scores.h"
 #include <cstdlib>
 #include <ctime>
+#include <vector>
 
 // Keyboard button pressed
 void keyboardDown(unsigned char key, int x, int y);
@@ -24,16 +26,17 @@ void display();
 
 // Initialize game
 Player p;
-UI ui;
 std::vector<NPC> enemies;
 float spawnTimer = 0.0f; // timer for spawning NPCs
+bool leaderboardUpdated = false;
 
 // State of game
 enum AppState {
-    MENU,
-    GAME
+    START,
+    GAME,
+    END
 };
-AppState currentState = MENU;
+AppState currentState = END;
 
 int main(int argc, char** argv) {
    //Initialize window and game
@@ -61,9 +64,8 @@ int main(int argc, char** argv) {
 
 //Keyboard button pressed
 void keyboardDown(unsigned char key, int x, int y) {
-   if (currentState == MENU && key == ' ') {
+   if ((currentState == START || currentState == END) && key == ' ')
       currentState = GAME;
-   }
    p.updateKey(key, true);
 }
 
@@ -78,8 +80,8 @@ void update(int value) {
    // Check if in game state
    if (currentState == GAME) {
       // TEMPORARY update calls. should be called whenever health or score changes
-      ui.updateHealth(1);
-      ui.updateScore(1);
+      p.updateHealth(1);
+      p.updateScore(1);
 
       for (auto &enemy: enemies) {
          enemy.updateNPC();
@@ -110,16 +112,25 @@ void display() {
    glLoadIdentity();
 
    // Menu
-   if (currentState == MENU) {
-      displayMenu(p);
+   if (currentState == START) {
+      displayStart(p);
    // Game
    } else if (currentState == GAME) {
+      leaderboardUpdated = false;
       drawBorders();
       p.drawPlayer();
       for (auto &enemy: enemies) {
          enemy.drawNPC();
       }
-      ui.drawUI();
+      drawUI(p);
+   // End
+   } else if (currentState == END) {
+      if (!leaderboardUpdated) {
+         updateLeaderboard(p.getScore());
+         leaderboardUpdated = true;
+      }
+      displayLeaderboard();
+      displayEnd(p);
    }
 
    glutSwapBuffers();

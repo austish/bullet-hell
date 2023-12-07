@@ -2,12 +2,7 @@
 #include "ui.h"
 #include "borders.h"
 
-UI::UI() {
-    health = 100;
-    score = 0;
-}
-
-void UI::drawUI() {
+void drawUI(Player p) {
     glColor3f(0.5f, 0.5f, 0.5f); // Grey background
     glBegin(GL_QUADS);
     glVertex2f(borderLeft, borderTop + UIheight);
@@ -17,18 +12,10 @@ void UI::drawUI() {
     glEnd();
 
     glColor3f(1.0f, 1.0f, 1.0f); // White text
-    std::string h = "Health: " + std::to_string(health);
+    std::string h = "Health: " + std::to_string(p.getHealth());
     drawText(h, borderLeft + 10, borderTop + UIheight - 30);
-    std::string s = "Score: " + std::to_string(score);
+    std::string s = "Score: " + std::to_string(p.getScore());
     drawText(s, borderRight - 100, borderTop + UIheight - 30);
-}
-
-void UI::updateHealth(int amount) {
-    health += amount;
-}
-
-void UI::updateScore(int amount) {
-    score += amount;
 }
 
 void drawText(const std::string &text, float x, float y) {

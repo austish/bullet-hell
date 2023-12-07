@@ -11,6 +11,8 @@ Player::Player() {
     posY = 0.0f;
     size = 30.0f;
     speed = 3.0f;
+    score = 0;
+    health = 0;
 }
 
 // Player movement
@@ -28,6 +30,22 @@ void Player::updatePlayer() {
 // Update movement keystates
 void Player::updateKey(unsigned char key, bool value) {
     keyStates[key] = value;
+}
+
+void Player::updateHealth(int amount) {
+    health += amount;
+}
+
+void Player::updateScore(int amount) {
+    score += amount;
+}
+
+int Player::getScore() {
+    return score;
+}
+
+int Player::getHealth() {
+    return health;
 }
 
 //Draw player
