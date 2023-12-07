@@ -13,7 +13,6 @@ class NPC{
         float posY;
         float size;
         float speed;
-        int state; // 1 for alive, 0 for dead
         NPCState state; // Updated to use NPCState enum
         ShapeType shape; // Shape of the NPC
     public:
