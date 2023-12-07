@@ -1,11 +1,9 @@
+#ifdef APPLE // Check OS
 #define GL_SILENCE_DEPRECATION
+#include <OpenGL/gl.h>
+#include <GLUT/glut.h> 
+#else
 #include <GL/glut.h>
-<<<<<<< Updated upstream
-#include "lib/player.h"
-#include "lib/npc.h"
-
-//Initialize player
-=======
 #endif
 
 #include "lib/player.h"
@@ -30,77 +28,21 @@ void display();
 // Mouse movement and clicking
 void mouseMotion(int x, int y);
 void mouseClick(int button, int state, int x, int y);
-// draws circle to represent user crosshair
+// Circle representing user crosshair
 void drawCircle(float centerX, float centerY, float radius, int numSegments);
 
 // Initialize game
->>>>>>> Stashed changes
 Player p;
+UI ui;
+std::vector<NPC> enemies;
+float spawnTimer = 0.0f; // timer for spawning NPCs
 
-//Initialize NPCs
-NPC enemies[3] = {
-   NPC(0.0f, 100.0f, 30.0f, 1.0f),
-   NPC(100.0f, 0.0f, 30.0f, 1.0f),
-   NPC(200.0f, 100.0f, 30.0f, 1.0f)
+// State of game
+enum AppState {
+    MENU,
+    GAME
 };
-
-//Display callback function
-void display() {
-   glClear(GL_COLOR_BUFFER_BIT);
-   glLoadIdentity();
-
-   //Draw player (red)
-   glColor3f(1.0f, 0.0f, 0.0f);
-   float playerSize = p.getSize();
-   glPushMatrix();
-   glTranslatef(p.getPosX(), p.getPosY(), 0.0f);
-   glBegin(GL_QUADS);
-   glVertex2f(-playerSize / 2, -playerSize / 2);
-   glVertex2f(playerSize / 2, -playerSize / 2);
-   glVertex2f(playerSize / 2, playerSize / 2);
-   glVertex2f(-playerSize / 2, playerSize / 2);
-   glEnd();
-   glPopMatrix();
-
-   //Draw Enemy NPCs (yellow)
-   glColor3f(1.0f, 1.0f, 0.0f);
-   for (int i = 0; i < sizeof(enemies) / sizeof(enemies[0]); ++i) {
-      float enemiesSize = enemies[i].getSize();
-      glPushMatrix();
-      glTranslatef(enemies[i].getPosX(), enemies[i].getPosY(), 0.0f);
-      glBegin(GL_QUADS);
-      glVertex2f(-enemiesSize / 2, -enemiesSize / 2);
-      glVertex2f(enemiesSize / 2, -enemiesSize / 2);
-      glVertex2f(enemiesSize / 2, enemiesSize / 2);
-      glVertex2f(-enemiesSize / 2, enemiesSize / 2);
-      glEnd();
-      glPopMatrix();
-    }
-
-   glutSwapBuffers();
-}
-
-//Update function
-void update(int value) {
-   p.updatePlayer();
-
-   for (int i = 0; i < sizeof(enemies) / sizeof(enemies[0]); ++i) {
-        enemies[i].updateNPC();
-   }
-
-   glutPostRedisplay();
-   glutTimerFunc(16, update, 0); // Approx 60 FPS
-}
-
-//Keyboard button pressed
-void keyboardDown(unsigned char key, int x, int y) {
-   p.updateKey(key, true);
-}
-
-//Keyboard button released 
-void keyboardUp(unsigned char key, int x, int y) {
-   p.updateKey(key, false);
-}
+AppState currentState = MENU;
 
 // Global variables for mouse position
 float mouseX = 0.0f, mouseY = 0.0f;
@@ -109,8 +51,9 @@ int main(int argc, char** argv) {
    //Initialize window and game
    glutInit(&argc, argv);
    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
-   glutInitWindowSize(1100, 800);
-   glutCreateWindow("Temporary name");
+   glutInitWindowSize(1200, 800);
+   glutCreateWindow("Bullet Hell");
+   srand(static_cast<unsigned int>(time(nullptr)));   // Random seed
 
    //Handle display and keyboard updates
    glutDisplayFunc(display);
@@ -118,7 +61,7 @@ int main(int argc, char** argv) {
    glutKeyboardUpFunc(keyboardUp);
    glutTimerFunc(16, update, 0);
 
-   //Register mouse callbacks
+    // Register mouse callbacks
     glutPassiveMotionFunc(mouseMotion);
     glutMouseFunc(mouseClick);
 
@@ -132,8 +75,6 @@ int main(int argc, char** argv) {
    return 0;
 }
 
-<<<<<<< Updated upstream
-=======
 //Keyboard button pressed
 void keyboardDown(unsigned char key, int x, int y) {
    if (currentState == MENU && key == ' ') {
@@ -159,6 +100,10 @@ void update(int value) {
 
       for (auto &enemy: enemies) {
          enemy.updateNPC();
+         enemy.shootBullets();
+         for (auto &bullet : enemy.getBullets()){
+            bullet.updateBullet();
+         }
       }
 
       // Spawn NPCs
@@ -177,9 +122,8 @@ void update(int value) {
 
       // Update bullets
       for (auto& bullet : p.getBullets()) {
-         bullet.updateBullet();
+        bullet.updateBullet();
       }
-
       // Remove bullets that are off-screen or marked for removal
       p.removeMarkedBullets();
    }
@@ -202,13 +146,18 @@ void display() {
       p.drawPlayer();
       for (auto &enemy: enemies) {
          enemy.drawNPC();
+         for (auto &bullet : enemy.getBullets()){
+            bullet.drawBullet();
+         }
       }
       ui.drawUI();
       for (auto& bullet : p.getBullets()) {
          bullet.drawBullet();
       }
+      // Draw aiming circle at cursor position
       glColor3f(0.0f, 1.0f, 0.0f); // green
-      drawCircle(mouseX, mouseY, 5.0f, 12);
+      drawCircle(mouseX, mouseY, 5.0f, 12); // Radius 5 and 12 segments
+
    }
 
    glutSwapBuffers();
@@ -238,4 +187,3 @@ void drawCircle(float centerX, float centerY, float radius, int numSegments) {
     }
     glEnd();
 }
->>>>>>> Stashed changes
