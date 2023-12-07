@@ -123,9 +123,9 @@ void display() {
          enemy.drawNPC();
       }
       drawUI(p);
+   // End
    } else if (currentState == END) {
       if (!leaderboardUpdated) {
-         p.updateScore(5000);
          updateLeaderboard(p.getScore());
          leaderboardUpdated = true;
       }
