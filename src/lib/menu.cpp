@@ -13,11 +13,11 @@ void displayStart(Player p) {
     drawText("left click to shoot", 250, -250);
 }
 
-void displayEnd(Player p, UI ui) {
+void displayEnd(Player p) {
     glColor3f(1.0f, 0.0f, 0.0f); // Red
     // Game over
     drawText("Game over", -300, 200);
-    std::string s = "Score: " + std::to_string(ui.getScore());
+    std::string s = "Score: " + std::to_string(p.getScore());
     drawText(s, -300, 125);
     // Player
     p.drawPlayer();                    

@@ -10,6 +10,7 @@
 #include "lib/borders.h"
 #include "lib/ui.h"
 #include "lib/menu.h"
+#include "lib/scores.h"
 #include <cstdlib>
 #include <ctime>
 #include <vector>
@@ -25,9 +26,9 @@ void display();
 
 // Initialize game
 Player p;
-UI ui;
 std::vector<NPC> enemies;
 float spawnTimer = 0.0f; // timer for spawning NPCs
+bool leaderboardUpdated = false;
 
 // State of game
 enum AppState {
@@ -79,8 +80,8 @@ void update(int value) {
    // Check if in game state
    if (currentState == GAME) {
       // TEMPORARY update calls. should be called whenever health or score changes
-      ui.updateHealth(1);
-      ui.updateScore(1);
+      p.updateHealth(1);
+      p.updateScore(1);
 
       for (auto &enemy: enemies) {
          enemy.updateNPC();
@@ -115,14 +116,21 @@ void display() {
       displayStart(p);
    // Game
    } else if (currentState == GAME) {
+      leaderboardUpdated = false;
       drawBorders();
       p.drawPlayer();
       for (auto &enemy: enemies) {
          enemy.drawNPC();
       }
-      ui.drawUI();
+      drawUI(p);
    } else if (currentState == END) {
-      displayEnd(p, ui);
+      if (!leaderboardUpdated) {
+         p.updateScore(5000);
+         updateLeaderboard(p.getScore());
+         leaderboardUpdated = true;
+      }
+      displayLeaderboard();
+      displayEnd(p);
    }
 
    glutSwapBuffers();
