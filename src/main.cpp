@@ -30,7 +30,7 @@ std::vector<NPC> enemies;
 float spawnTimer = 0.0f; // timer for spawning NPCs
 bool leaderboardUpdated = false;
 bool gameEnded = false;
-GameState currentState = END;
+GameState currentState = START;
 
 int main(int argc, char** argv) {
    //Initialize window and game
