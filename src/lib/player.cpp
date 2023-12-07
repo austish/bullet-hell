@@ -46,7 +46,7 @@ void Player::drawPlayer() {
 }
 
 void Player::shootBullet(int mouseX, int mouseY) {
-    const float BULLET_SPEED = 5.0f;  // Adjust the speed as needed
+    const float BULLET_SPEED = 8.0f;  // Adjust the speed as needed
 
     // Calculate the direction from player to the cursor (normalized)
     float directionX = static_cast<float>(mouseX - posX);
@@ -58,7 +58,7 @@ void Player::shootBullet(int mouseX, int mouseY) {
         directionY /= length;
 
         // Create a bullet and add it to the bullets vector
-        bullets.push_back(Bullet(posX, posY, BULLET_SPEED, directionX, directionY));
+        bullets.push_back(Bullet(posX, posY, BULLET_SPEED, directionX, directionY, 1.0f, 0.0f, 0.0f)); //red bullets
     }
 }
 

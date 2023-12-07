@@ -1,8 +1,8 @@
 #include "bullet.h"
 #include "borders.h"
 
-Bullet::Bullet(float X, float Y, float bulletSpeed, float dirX, float dirY)
-    : posX(X), posY(Y), speed(bulletSpeed), directionX(dirX), directionY(dirY) {}
+Bullet::Bullet(float X, float Y, float bulletSpeed, float dirX, float dirY, float Red, float Green, float Blue)
+    : posX(X), posY(Y), speed(bulletSpeed), directionX(dirX), directionY(dirY), colorRed(Red), colorGreen(Green), colorBlue(Blue) {}
 
 void Bullet::updateBullet() {
     posX += speed * directionX;
@@ -16,7 +16,7 @@ void Bullet::updateBullet() {
 
 void Bullet::drawBullet() {
     const float bulletSize = 8.0f;
-    glColor3f(1.0f, 0.0f, 0.0f);  // Red 
+    glColor3f(colorRed, colorGreen, colorBlue);  //color should match player/npc
     glPushMatrix();
     glTranslatef(posX, posY, 0.0f);
     glBegin(GL_QUADS);

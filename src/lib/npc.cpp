@@ -39,10 +39,10 @@ void NPC::shootBullets() {
         // Reset the last shot time
         lastShotTime = currentTime;
 
-        // Create and store 4 bullets (up, left, right, down)
-        bullets.push_back(Bullet(posX, posY + BULLET_SPEED, BULLET_SPEED, 0.0f, 1.0f)); // Up
-        bullets.push_back(Bullet(posX - BULLET_SPEED, posY, BULLET_SPEED, -1.0f, 0.0f)); // Left
-        bullets.push_back(Bullet(posX + BULLET_SPEED, posY, BULLET_SPEED, 1.0f, 0.0f)); // Right
-        bullets.push_back(Bullet(posX, posY - BULLET_SPEED, BULLET_SPEED, 0.0f, -1.0f)); // Down
+        // Create and store 4 bullets (up, left, right, down) all 
+        bullets.push_back(Bullet(posX, posY + BULLET_SPEED, BULLET_SPEED, 0.0f, 1.0f, 1.0f, 1.0f, 0.0f )); // Up
+        bullets.push_back(Bullet(posX - BULLET_SPEED, posY, BULLET_SPEED, -1.0f, 0.0f, 1.0f, 1.0f, 0.0f)); // Left
+        bullets.push_back(Bullet(posX + BULLET_SPEED, posY, BULLET_SPEED, 1.0f, 0.0f, 1.0f, 1.0f, 0.0f)); // Right
+        bullets.push_back(Bullet(posX, posY - BULLET_SPEED, BULLET_SPEED, 0.0f, -1.0f, 1.0f, 1.0f, 0.0f)); // Down
     }
 }
