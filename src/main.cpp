@@ -78,13 +78,15 @@ void keyboardUp(unsigned char key, int x, int y) {
 void update(int value) {
    p.updatePlayer();
    // Check if in game state
+    float playerPosX = p.getX();
+    float playerPosY = p.getY();
    if (currentState == GAME) {
       // TEMPORARY update calls. should be called whenever health or score changes
       p.updateHealth(1);
       p.updateScore(1);
 
       for (auto &enemy: enemies) {
-         enemy.updateNPC();
+         enemy.updateNPC(playerPosX, playerPosY);
       }
 
       // Spawn NPCs
@@ -93,13 +95,23 @@ void update(int value) {
          // Random position within borders
          float x = borderLeft + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (borderRight + abs(borderLeft)))); // Random X
          float y = borderBottom + 40 + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (borderTop + abs(borderBottom) - 50))); // Random Y
+          
+         ShapeType randomShape = static_cast<ShapeType>(rand() % 3); // There are three shape types
 
          // Spawn new NPC
-         enemies.push_back(NPC(x, y, 30.0f, 1.0f));
+         enemies.push_back(NPC(x, y, 30.0f, 1.0f, randomShape));
 
          // Reset timer
          spawnTimer = 0.0f;
-      }
+      }// Collision detection and NPC removal
+      auto it = enemies.begin();
+      while (it != enemies.end()) {
+        if (it->checkCollisionWithPlayer(p.getX(), p.getY(), p.getSize())) {
+            it = enemies.erase(it);  // Remove NPC if collision detected
+        } else {
+            ++it;
+        }
+    }
    }
 
    glutPostRedisplay();
