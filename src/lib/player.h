@@ -23,6 +23,9 @@ class Player {
         int getHealth();
         void resetPlayer();
         void drawPlayer();
+        float getX() const;
+        float getY() const;
+        float getSize() const;
 };
 
 
