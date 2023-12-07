@@ -13,6 +13,7 @@ class UI {
         void updateHealth(int amount);
         void updateScore(int amount);
 };
+
 void drawText(const std::string &text, float x, float y);
 
 #endif

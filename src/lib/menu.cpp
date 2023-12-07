@@ -11,5 +11,5 @@ void displayMenu(Player p) {
     glColor3f(1.0f, 1.0f, 1.0f); // White
     drawText("spacebar to start", -50, -250);
     drawText("wasd to move", -350, -250);
-    drawText("right click to shoot", 250, -250);
+    drawText("left click to shoot", 250, -250);
 }
