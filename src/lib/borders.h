@@ -1,5 +1,5 @@
 // Border variables and functions
-#ifdef APPLE // Check os
+#ifdef __APPLE__ // Check os
 #define GL_SILENCE_DEPRECATION
 #include <OpenGL/gl.h>
 #include <GLUT/glut.h> 
