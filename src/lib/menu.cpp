@@ -1,6 +1,6 @@
 #include "menu.h"
 #include "borders.h"
-
+// Start screen
 void displayStart(Player p) {
     glColor3f(1.0f, 0.0f, 0.0f); // Red
     // Title
@@ -12,7 +12,7 @@ void displayStart(Player p) {
     drawText("wasd to move", -350, -250);
     drawText("left click to shoot", 250, -250);
 }
-
+// Game Over screen
 void displayEnd(Player p) {
     glColor3f(1.0f, 0.0f, 0.0f); // Red
     // Game over
