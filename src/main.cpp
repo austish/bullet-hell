@@ -184,7 +184,6 @@ void display() {
       displayStart(p);
    // Game
    } else if (currentState == GAME) {
-      // Reset game
       if (gameEnded) {
          p.resetPlayer();
          enemies.clear();
@@ -205,7 +204,7 @@ void display() {
       }
       // Draw aiming circle at cursor position
       glColor3f(0.0f, 1.0f, 0.0f); // green
-      drawCircle(mouseX, mouseY, 5.0f, 12); // Radius 5 and 12 segments
+      drawCircle(mouseX, mouseY, 5.0f, 12);
 
       drawUI(p);
    // End
