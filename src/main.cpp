@@ -121,11 +121,6 @@ void update(int value) {
          spawnTimer = 0.0f;
       }
 
-      // Update bullets
-      for (auto& bullet : p.getBullets()) {
-         bullet.updateBullet();
-      }
-
         // Update bullets
         for (auto& bullet : p.getBullets()) {
             bullet.updateBullet();
