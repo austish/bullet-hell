@@ -60,7 +60,17 @@ void NPC::updateNPC(float playerPosX, float playerPosY) {
 
         // Wrap around logic
         if (posX > borderRight - size / 2) {
-            posX = -400.0f;
+            posX = borderLeft;
+        }
+        else if (posX < borderLeft - size / 2){
+            posX = borderRight;
+        }
+        
+        if(posY > borderTop - size /2){
+            posY = borderBottom;
+        }
+        else if(posY < borderBottom - size / 2){
+            posY = borderTop;
         }
     }
 }
