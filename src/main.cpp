@@ -104,18 +104,17 @@ void update(int value) {
       }
 
       // Spawn NPCs
-      spawnTimer += 16.0f; // Increment by 16 milliseconds (time per frame)
-      if (spawnTimer >= 1000.0f) {  // Spawn every second
+      spawnTimer += 16.0f; 
+      if (spawnTimer >= 1000.0f) {  
          // Random position within borders
          float x = borderLeft + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (borderRight + abs(borderLeft)))); // Random X
          float y = borderBottom + 40 + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (borderTop + abs(borderBottom) - 50))); // Random Y
 
-         ShapeType randomShape = static_cast<ShapeType>(rand() % 3); // There are three shape types
+         ShapeType randomShape = static_cast<ShapeType>(rand() % 3);
 
          // Spawn new NPC
          enemies.push_back(NPC(x, y, 30.0f, 1.0f, randomShape));
 
-         // Reset timer
          spawnTimer = 0.0f;
       }
 
@@ -137,11 +136,10 @@ void update(int value) {
          // Check if the bullet collides with any NPC
          for (auto& enemy : enemies) {
                if (enemy.checkCollisionWithBullet(bullet.getPosX(), bullet.getPosY(), bullet.getSize())) {
-                  // Bullet hit an NPC, you can handle this event (e.g., reduce NPC health) here
                   enemy.markForRemoval();
-                  bullet.markForRemoval(); // Mark the bullet for removal
+                  bullet.markForRemoval();
                   p.removeMarkedBullets();
-                  p.updateScore(100); //give player 100 points
+                  p.updateScore(100); 
                }
          }
       }
@@ -157,7 +155,7 @@ void update(int value) {
                //ADD update for bullets here
                 if (p.checkCollisionWithBullet(enemyBullet.getPosX(), enemyBullet.getPosY(), enemyBullet.getSize())) {
                     // NPC bullet hit the player, you can handle this event (e.g., reduce player health) here
-                    p.updateHealth(-1); //take one health from player
+                    p.updateHealth(-1);
                     if(p.getHealth() == 0){
                         //remove all player bullets from last instance of game
                         for (auto& bullet : p.getBullets()) {
@@ -167,8 +165,8 @@ void update(int value) {
                      //End game
                      currentState = END;
                     }
-                    enemyBullet.markForRemoval(); // Mark the NPC bullet for removal
-                    enemy.removeMarkedBullets(); //remove bullet that hit player
+                    enemyBullet.markForRemoval();
+                    enemy.removeMarkedBullets(); 
                 }
             }
         }
@@ -192,7 +190,6 @@ void display() {
       displayStart(p);
    // Game
    } else if (currentState == GAME) {
-      // Reset game
       if (gameEnded) {
          p.resetPlayer();
          enemies.clear();
@@ -213,7 +210,7 @@ void display() {
       }
       // Draw aiming circle at cursor position
       glColor3f(0.0f, 1.0f, 0.0f); // green
-      drawCircle(mouseX, mouseY, 5.0f, 12); // Radius 5 and 12 segments
+      drawCircle(mouseX, mouseY, 5.0f, 12);
 
       drawUI(p);
    // End
