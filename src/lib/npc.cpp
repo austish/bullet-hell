@@ -73,7 +73,7 @@ void NPC::updateNPC(float playerPosX, float playerPosY) {
         }
     }
 }
-
+// NPC shapes
 void NPC::drawNPC(){
     glColor3f(1.0f, 1.0f, 0.0f); // Set color (yellow)d
     glPushMatrix();
