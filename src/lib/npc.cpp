@@ -4,33 +4,27 @@
 NPC::NPC(float X, float Y, float Size, float Speed, ShapeType Shape)
 : posX(X), posY(Y), size(Size), speed(Speed), shape(Shape), state(NORMAL) {}
 
-std::vector<Bullet>& NPC::getBullets(){
-    return bullets;
-}
-
 void NPC::updateNPC(float playerPosX, float playerPosY) {
     // Calculate distance to player
     float dx = posX - playerPosX;
     float dy = posY - playerPosY;
     float distance = std::sqrt(dx * dx + dy * dy);
 
-    // Check if the player is close to the NPC
-    float evasiveThreshold = 110.0f; // Set the threshold as you see fit
+    // Check if the player is too close to the NPC
+    float evasiveThreshold = 110.0f;
     if (distance < evasiveThreshold) {
-        // Evasive action: move away from the player or change direction
         if (posX < playerPosX) {
-            posX -= speed; // Move to the left if player is to the right
+            posX -= speed;
         } else {
-            posX += speed; // Move to the right if player is to the left
+            posX += speed;
         }
 
         if (posY < playerPosY) {
-            posY -= speed; // Move down if player is above
+            posY -= speed;
         } else {
-            posY += speed; // Move up if player is below
+            posY += speed;
         }
     } else {
-        // Check if the NPC is a triangle
         if (shape == TRIANGLE) {
             // Define a timer for direction change delay
             static int directionChangeDelay = 100; // Change direction every 500 milliseconds
@@ -73,9 +67,9 @@ void NPC::updateNPC(float playerPosX, float playerPosY) {
         }
     }
 }
-// NPC shapes
+
 void NPC::drawNPC(){
-    glColor3f(1.0f, 1.0f, 0.0f); // Set color (yellow)d
+    glColor3f(1.0f, 1.0f, 0.0f); // Set color to yellow
     glPushMatrix();
     glTranslatef(posX, posY, 0.0f);
 
@@ -109,20 +103,37 @@ void NPC::drawNPC(){
 }
 
 void NPC::shootBullets() {
-    const float BULLET_SPEED = 3.5f;  // Adjust the speed as needed
+    const float BULLET_SPEED = 3.5f;  // Define speed of bullets
 
     // Check if enough time has passed since the last shot
     double currentTime = glutGet(GLUT_ELAPSED_TIME);
     if (currentTime - lastShotTime >= shootingInterval) {
-        // Reset the last shot time
         lastShotTime = currentTime;
 
-        // Create and store 4 bullets (up, left, right, down) all 
+        // Create and store 4 bullets
         bullets.push_back(Bullet(posX, posY + BULLET_SPEED, BULLET_SPEED, 0.0f, 1.0f, 1.0f, 1.0f, 0.0f )); // Up
         bullets.push_back(Bullet(posX - BULLET_SPEED, posY, BULLET_SPEED, -1.0f, 0.0f, 1.0f, 1.0f, 0.0f)); // Left
         bullets.push_back(Bullet(posX + BULLET_SPEED, posY, BULLET_SPEED, 1.0f, 0.0f, 1.0f, 1.0f, 0.0f)); // Right
         bullets.push_back(Bullet(posX, posY - BULLET_SPEED, BULLET_SPEED, 0.0f, -1.0f, 1.0f, 1.0f, 0.0f)); // Down
     }
+}
+
+void NPC::markForRemoval(){
+    markedForRemoval = true;
+}
+
+void NPC::removeMarkedBullets() {
+    bullets.erase(std::remove_if(bullets.begin(), bullets.end(), [](const Bullet& bullet) {
+        return bullet.getMarkedForRemoval();
+    }), bullets.end());
+}
+
+bool NPC::getMarkedForRemoval() const {
+    return markedForRemoval;
+}
+
+std::vector<Bullet>& NPC::getBullets(){
+    return bullets;
 }
 
 bool NPC::checkCollisionWithBullet(float bulletX, float bulletY, float bulletSize) const{
@@ -133,18 +144,4 @@ bool NPC::checkCollisionWithBullet(float bulletX, float bulletY, float bulletSiz
 bool NPC::checkCollisionWithPlayer(float playerX, float playerY, float playerSize) const {
     return (std::abs(playerX - posX) < (size / 2 + playerSize / 2)) &&
            (std::abs(playerY - posY) < (size / 2 + playerSize / 2));
-}
-
-void NPC::markForRemoval(){
-    markedForRemoval = true;
-}
-
-bool NPC::getMarkedForRemoval() const {
-    return markedForRemoval;
-}
-
-void NPC::removeMarkedBullets() {
-    bullets.erase(std::remove_if(bullets.begin(), bullets.end(), [](const Bullet& bullet) {
-        return bullet.getMarkedForRemoval();
-    }), bullets.end());
 }
