@@ -6,6 +6,7 @@
 #include <algorithm>
 #include <iostream>
 
+// Leaderboard 
 void displayLeaderboard() {
     // Load leaderboard data from a file
     std::vector<int> leaderboard;
@@ -26,6 +27,7 @@ void displayLeaderboard() {
     }
 }
 
+// Update the leaderboard
 void updateLeaderboard(int playerScore) {
     // Load leaderboard data from a file
     std::vector<int> leaderboard;
