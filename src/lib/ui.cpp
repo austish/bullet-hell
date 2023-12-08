@@ -2,6 +2,7 @@
 #include "ui.h"
 #include "borders.h"
 
+// UI player design
 void drawUI(Player p) {
     glColor3f(0.5f, 0.5f, 0.5f); // Grey background
     glBegin(GL_QUADS);
@@ -18,6 +19,7 @@ void drawUI(Player p) {
     drawText(s, borderRight - 100, borderTop + UIheight - 30);
 }
 
+// UI text design
 void drawText(const std::string &text, float x, float y) {
     glRasterPos2f(x, y);
     for (char c : text) {
