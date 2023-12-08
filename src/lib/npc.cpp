@@ -1,9 +1,12 @@
-// npc.cpp
 #include "npc.h"
 #include "borders.h"
 
 NPC::NPC(float X, float Y, float Size, float Speed, ShapeType Shape)
 : posX(X), posY(Y), size(Size), speed(Speed), shape(Shape), state(NORMAL) {}
+
+std::vector<Bullet>& NPC::getBullets(){
+    return bullets;
+}
 
 void NPC::updateNPC(float playerPosX, float playerPosY) {
     // Calculate distance to player
@@ -56,13 +59,23 @@ void NPC::updateNPC(float playerPosX, float playerPosY) {
 
         // Wrap around logic
         if (posX > borderRight - size / 2) {
-            posX = -400.0f;
+            posX = borderLeft + size / 2;
+        }
+        else if (posX < borderLeft + size / 2){
+            posX = borderRight - size / 2;
+        }
+        
+        if(posY > borderTop - size /2){
+            posY = borderBottom + size / 2;
+        }
+        else if(posY < borderBottom + size / 2){
+            posY = borderTop - size / 2;
         }
     }
 }
 // NPC shapes
 void NPC::drawNPC(){
-    glColor3f(1.0f, 1.0f, 0.0f); // Set color (yellow)
+    glColor3f(1.0f, 1.0f, 0.0f); // Set color (yellow)d
     glPushMatrix();
     glTranslatef(posX, posY, 0.0f);
 
@@ -94,8 +107,44 @@ void NPC::drawNPC(){
 
     glPopMatrix();
 }
-// Collision detect for the NPCs
+
+void NPC::shootBullets() {
+    const float BULLET_SPEED = 3.5f;  // Adjust the speed as needed
+
+    // Check if enough time has passed since the last shot
+    double currentTime = glutGet(GLUT_ELAPSED_TIME);
+    if (currentTime - lastShotTime >= shootingInterval) {
+        // Reset the last shot time
+        lastShotTime = currentTime;
+
+        // Create and store 4 bullets (up, left, right, down) all 
+        bullets.push_back(Bullet(posX, posY + BULLET_SPEED, BULLET_SPEED, 0.0f, 1.0f, 1.0f, 1.0f, 0.0f )); // Up
+        bullets.push_back(Bullet(posX - BULLET_SPEED, posY, BULLET_SPEED, -1.0f, 0.0f, 1.0f, 1.0f, 0.0f)); // Left
+        bullets.push_back(Bullet(posX + BULLET_SPEED, posY, BULLET_SPEED, 1.0f, 0.0f, 1.0f, 1.0f, 0.0f)); // Right
+        bullets.push_back(Bullet(posX, posY - BULLET_SPEED, BULLET_SPEED, 0.0f, -1.0f, 1.0f, 1.0f, 0.0f)); // Down
+    }
+}
+
+bool NPC::checkCollisionWithBullet(float bulletX, float bulletY, float bulletSize) const{
+    return (std::abs(bulletX - posX) < (size / 2 + bulletSize / 2)) &&
+           (std::abs(bulletY - posY) < (size / 2 + bulletSize / 2));
+}
+
 bool NPC::checkCollisionWithPlayer(float playerX, float playerY, float playerSize) const {
     return (std::abs(playerX - posX) < (size / 2 + playerSize / 2)) &&
            (std::abs(playerY - posY) < (size / 2 + playerSize / 2));
+}
+
+void NPC::markForRemoval(){
+    markedForRemoval = true;
+}
+
+bool NPC::getMarkedForRemoval() const {
+    return markedForRemoval;
+}
+
+void NPC::removeMarkedBullets() {
+    bullets.erase(std::remove_if(bullets.begin(), bullets.end(), [](const Bullet& bullet) {
+        return bullet.getMarkedForRemoval();
+    }), bullets.end());
 }

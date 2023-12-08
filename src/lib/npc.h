@@ -1,7 +1,11 @@
-// NPC Class
 #ifndef NPC_H
 #define NPC_H
+
+#include "bullet.h"
+
 #include <string>
+#include <vector>
+#include <algorithm>
 #include <cmath>
 
 enum ShapeType { SQUARE, TRIANGLE, CIRCLE };
@@ -13,14 +17,26 @@ class NPC{
         float posY;
         float size;
         float speed;
+        bool markedForRemoval = false;
+        double lastShotTime;
+        double shootingInterval = 3000; // Time interval between shots 3 seconds
+        std::vector<Bullet> bullets;
+    public:
+        NPC(float X, float Y, float size, float speed);
+        std::vector<Bullet>& getBullets();
+        void updateNPC();
+        void drawNPC();
+        void shootBullets();
+        bool checkCollisionWithBullet(float bulletX, float bulletY, float bulletSize) const;
+        void markForRemoval();
+        bool getMarkedForRemoval() const;
         NPCState state; // Updated to use NPCState enum
         ShapeType shape; // Shape of the NPC
-    public:
         NPC(float X, float Y, float size, float speed, ShapeType shapeType); 
         void updateNPC(float playerPosX, float playerPosY); // Updated to take player's position
-        void drawNPC();
         // Method for collision detection
         bool checkCollisionWithPlayer(float playerX, float playerY, float playerSize) const;
+        void removeMarkedBullets();
 };
 
 #endif

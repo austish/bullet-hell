@@ -3,7 +3,8 @@
 #include "borders.h"
 #include <cstring>
 #include <cmath>
-// User basics
+#include <algorithm>
+
 Player::Player() {
     //set all keyStates to 0
     memset(keyStates, 0, sizeof(keyStates));
@@ -13,7 +14,7 @@ Player::Player() {
     size = 30.0f;
     speed = 3.0f;
     score = 0;
-    health = 0;
+    health = 3;
 }
 
 // Player movement
@@ -32,7 +33,45 @@ void Player::updatePlayer() {
 void Player::updateKey(unsigned char key, bool value) {
     keyStates[key] = value;
 }
-// Update health of the player
+
+void Player::shootBullet(int mouseX, int mouseY) {
+    const float BULLET_SPEED = 8.0f;  // Adjust the speed as needed
+
+    // Calculate the direction from player to the cursor (normalized)
+    float directionX = static_cast<float>(mouseX - posX);
+    float directionY = static_cast<float>(mouseY - posY);
+    float length = std::sqrt(directionX * directionX + directionY * directionY);
+
+    if (length != 0) {
+        directionX /= length;
+        directionY /= length;
+
+        // Create a bullet and add it to the bullets vector
+        bullets.push_back(Bullet(posX, posY, BULLET_SPEED, directionX, directionY, 1.0f, 0.0f, 0.0f)); //red bullets
+    }
+}
+
+std::vector<Bullet>& Player::getBullets() {
+    return bullets;
+}
+
+void Player::removeMarkedBullets() {
+    bullets.erase(std::remove_if(bullets.begin(), bullets.end(), [](const Bullet &b) { return b.getMarkedForRemoval(); }), bullets.end());
+}
+
+float Player::getPosX(){
+    return posX;
+}
+
+float Player::getPosY(){
+    return posY;
+}
+
+bool Player::checkCollisionWithBullet(float bulletX, float bulletY, float bulletSize) const{
+    return (std::abs(bulletX - posX) < (size / 2 + bulletSize / 2)) &&
+           (std::abs(bulletY - posY) < (size / 2 + bulletSize / 2));
+}
+
 void Player::updateHealth(int amount) {
     health += amount;
 }
@@ -53,7 +92,7 @@ void Player::resetPlayer() {
     posX = 0.0f;
     posY = 0.0f;
     score = 0;
-    health = 0;
+    health = 3;
 }
 
 //Draw player
@@ -110,15 +149,6 @@ void Player::drawPlayer() {
     glPopMatrix();
 }
 
-// Get the coordinate x of the Player
-float Player::getX() const {
-    return posX;
-}
-// Get the coordinate y of the Player
-float Player::getY() const {
-    return posY;
-}
-// Get the size of the Player
 float Player::getSize() const {
     return size;
 }

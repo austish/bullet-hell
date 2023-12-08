@@ -5,12 +5,20 @@
 #else
 #include <GL/glut.h>
 #endif
+
 #include "lib/player.h"
 #include "lib/npc.h"
 #include "lib/borders.h"
 #include "lib/ui.h"
 #include "lib/menu.h"
+#include "lib/bullet.h"
 #include "lib/scores.h"
+
+#include <cstdlib>
+#include <ctime>
+#include <vector>
+#include <cmath>
+#include <algorithm>
 #include <cstdlib>
 #include <ctime>
 #include <vector>
@@ -23,14 +31,22 @@ void keyboardUp(unsigned char key, int x, int y);
 void update(int value);
 // Display callback function
 void display();
+// Mouse movement and clicking
+void mouseMotion(int x, int y);
+void mouseClick(int button, int state, int x, int y);
+// Circle representing user crosshair
+void drawCircle(float centerX, float centerY, float radius, int numSegments);
 
-// Initialize variables
+// Initialize game
 Player p;
 std::vector<NPC> enemies;
 float spawnTimer = 0.0f; // timer for spawning NPCs
 bool leaderboardUpdated = false;
 bool gameEnded = false;
 GameState currentState = START;
+
+// Global variables for mouse position
+float mouseX = 0.0f, mouseY = 0.0f;
 
 int main(int argc, char** argv) {
    //Initialize window and game
@@ -45,6 +61,10 @@ int main(int argc, char** argv) {
    glutKeyboardFunc(keyboardDown);
    glutKeyboardUpFunc(keyboardUp);
    glutTimerFunc(16, update, 0);
+
+    // Register mouse callbacks
+    glutPassiveMotionFunc(mouseMotion);
+    glutMouseFunc(mouseClick);
 
    //Projection
    glMatrixMode(GL_PROJECTION);
@@ -71,12 +91,13 @@ void keyboardUp(unsigned char key, int x, int y) {
 //Update function
 void update(int value) {
    p.updatePlayer();
-   // Check if in game state
-   float playerPosX = p.getX();
-   float playerPosY = p.getY();
    if (currentState == GAME) {
       // TEMPORARY update calls. should be called whenever health or score changes
       // p.updateHealth(1);
+
+      // Check if in game state
+      float playerPosX = p.getPosX();
+      float playerPosY = p.getPosY();
 
       for (auto &enemy: enemies) {
          enemy.updateNPC(playerPosX, playerPosY);
@@ -88,7 +109,7 @@ void update(int value) {
          // Random position within borders
          float x = borderLeft + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (borderRight + abs(borderLeft)))); // Random X
          float y = borderBottom + 40 + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (borderTop + abs(borderBottom) - 50))); // Random Y
-          
+
          ShapeType randomShape = static_cast<ShapeType>(rand() % 3); // There are three shape types
 
          // Spawn new NPC
@@ -96,16 +117,65 @@ void update(int value) {
 
          // Reset timer
          spawnTimer = 0.0f;
-      }// Collision detection and NPC removal
+      }
+
+      // Collision detection and NPC removal
       auto it = enemies.begin();
       while (it != enemies.end()) {
-        if (it->checkCollisionWithPlayer(p.getX(), p.getY(), p.getSize())) {
+        if (it->checkCollisionWithPlayer(p.getPosX(), p.getPosY(), p.getSize())) {
             it = enemies.erase(it);  // Remove NPC if collision detected
             p.updateScore(100);
         } else {
             ++it;
         }
     }
+
+      // Update bullets
+      for (auto& bullet : p.getBullets()) {
+         bullet.updateBullet();
+
+         // Check if the bullet collides with any NPC
+         for (auto& enemy : enemies) {
+               if (enemy.checkCollisionWithBullet(bullet.getPosX(), bullet.getPosY(), bullet.getSize())) {
+                  // Bullet hit an NPC, you can handle this event (e.g., reduce NPC health) here
+                  enemy.markForRemoval();
+                  bullet.markForRemoval(); // Mark the bullet for removal
+                  p.removeMarkedBullets();
+                  p.updateScore(100); //give player 100 points
+               }
+         }
+      }
+
+        // Update NPCs
+        for (auto& enemy : enemies) {
+            enemy.updateNPC(playerPosX, playerPosY);
+            enemy.shootBullets();
+
+            // Check if any NPC bullet collides with the player
+            for (auto& enemyBullet : enemy.getBullets()) {
+               enemyBullet.updateBullet();
+               //ADD update for bullets here
+                if (p.checkCollisionWithBullet(enemyBullet.getPosX(), enemyBullet.getPosY(), enemyBullet.getSize())) {
+                    // NPC bullet hit the player, you can handle this event (e.g., reduce player health) here
+                    p.updateHealth(-1); //take one health from player
+                    if(p.getHealth() == 0){
+                        //remove all player bullets from last instance of game
+                        for (auto& bullet : p.getBullets()) {
+                           bullet.markForRemoval();
+                        }
+                        p.removeMarkedBullets();
+                     //End game
+                     currentState = END;
+                    }
+                    enemyBullet.markForRemoval(); // Mark the NPC bullet for removal
+                    enemy.removeMarkedBullets(); //remove bullet that hit player
+                }
+            }
+        }
+
+
+        // Remove NPCs marked for removal
+        enemies.erase(std::remove_if(enemies.begin(), enemies.end(), [](const NPC& enemy) { return enemy.getMarkedForRemoval(); }), enemies.end());
    }
 
    glutPostRedisplay();
@@ -134,7 +204,17 @@ void display() {
       p.drawPlayer();
       for (auto &enemy: enemies) {
          enemy.drawNPC();
+         for (auto &bullet : enemy.getBullets()){
+            bullet.drawBullet();
+         }
       }
+      for (auto& bullet : p.getBullets()) {
+         bullet.drawBullet();
+      }
+      // Draw aiming circle at cursor position
+      glColor3f(0.0f, 1.0f, 0.0f); // green
+      drawCircle(mouseX, mouseY, 5.0f, 12); // Radius 5 and 12 segments
+
       drawUI(p);
    // End
    } else if (currentState == END) {
@@ -148,4 +228,29 @@ void display() {
    }
 
    glutSwapBuffers();
+}
+
+void mouseMotion(int x, int y) {
+    int windowWidth = glutGet(GLUT_WINDOW_WIDTH);
+    int windowHeight = glutGet(GLUT_WINDOW_HEIGHT);
+
+    mouseX = ((float)x / windowWidth) * 800 - 400; 
+    mouseY = 300 - ((float)y / windowHeight) * 600; 
+}
+
+void mouseClick(int button, int state, int x, int y) {
+    if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
+        p.shootBullet(mouseX, mouseY);
+    }
+}
+
+void drawCircle(float centerX, float centerY, float radius, int numSegments) {
+    glBegin(GL_POLYGON);
+    for (int i = 0; i < numSegments; i++) {
+        float theta = 2.0f * 3.1415926f * float(i) / float(numSegments);
+        float x = radius * cosf(theta);
+        float y = radius * sinf(theta);
+        glVertex2f(x + centerX, y + centerY);
+    }
+    glEnd();
 }
