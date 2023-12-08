@@ -1,2 +1,4 @@
 *.o
-text/
+src/lib/text/leaderboard.txt
+src/lib/borders.h
+main
