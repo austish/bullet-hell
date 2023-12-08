@@ -3,7 +3,7 @@
 #include "borders.h"
 #include <cstring>
 #include <cmath>
-
+// User basics
 Player::Player() {
     //set all keyStates to 0
     memset(keyStates, 0, sizeof(keyStates));
@@ -32,23 +32,23 @@ void Player::updatePlayer() {
 void Player::updateKey(unsigned char key, bool value) {
     keyStates[key] = value;
 }
-
+// Update health of the player
 void Player::updateHealth(int amount) {
     health += amount;
 }
-
+// Update score of the player
 void Player::updateScore(int amount) {
     score += amount;
 }
-
+// Get Player score
 int Player::getScore() {
     return score;
 }
-
+// Get Player health
 int Player::getHealth() {
     return health;
 }
-
+// Player dies
 void Player::resetPlayer() {
     posX = 0.0f;
     posY = 0.0f;
@@ -110,15 +110,15 @@ void Player::drawPlayer() {
     glPopMatrix();
 }
 
-
+// Get the coordinate x of the Player
 float Player::getX() const {
     return posX;
 }
-
+// Get the coordinate y of the Player
 float Player::getY() const {
     return posY;
 }
-
+// Get the size of the Player
 float Player::getSize() const {
     return size;
 }
