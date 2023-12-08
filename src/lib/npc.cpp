@@ -54,15 +54,13 @@ void NPC::updateNPC(float playerPosX, float playerPosY) {
         // Wrap around logic
         if (posX > borderRight - size / 2) {
             posX = borderLeft + size / 2;
-        }
-        else if (posX < borderLeft + size / 2){
+        } else if (posX < borderLeft + size / 2){
             posX = borderRight - size / 2;
         }
         
         if(posY > borderTop - size /2){
             posY = borderBottom + size / 2;
-        }
-        else if(posY < borderBottom + size / 2){
+        } else if(posY < borderBottom + size / 2){
             posY = borderTop - size / 2;
         }
     }
@@ -73,6 +71,7 @@ void NPC::drawNPC(){
     glPushMatrix();
     glTranslatef(posX, posY, 0.0f);
 
+    // Draw the NPC shapes which can be square, circle, or triangle
     switch(shape) {
         case SQUARE:
             glBegin(GL_QUADS);

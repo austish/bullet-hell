@@ -8,14 +8,14 @@ void Bullet::updateBullet() {
     posX += speed * directionX;
     posY += speed * directionY;
 
-    // Check if the bullet is out of bounds, and if so, mark it for removal
+    // Check if the bullet is out of bounds,if it is mark it for removal
     if (posY > borderTop || posY < borderBottom || posX < borderLeft || posX > borderRight) {
         markedForRemoval = true;
     }
 }
 
 void Bullet::drawBullet() {
-    glColor3f(colorRed, colorGreen, colorBlue);  //color should match player/npc
+    glColor3f(colorRed, colorGreen, colorBlue);  // Color should match respective player/NPC
     glPushMatrix();
     glTranslatef(posX, posY, 0.0f);
     glBegin(GL_QUADS);

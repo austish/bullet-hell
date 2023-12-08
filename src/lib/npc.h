@@ -2,7 +2,6 @@
 #define NPC_H
 
 #include "bullet.h"
-
 #include <string>
 #include <vector>
 #include <algorithm>

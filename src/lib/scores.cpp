@@ -20,7 +20,7 @@ void displayLeaderboard() {
     }
 
     // Display the top 5 scores
-    glColor3f(1.0f, 0.0f, 0.0f); // Red
+    glColor3f(1.0f, 0.0f, 0.0f); // Set color to red
     drawText("Leaderboard", 200, 250);
     for (int i = 0.; i < leaderboard.size(); i++) {
         drawText(std::to_string(i) + ". " + std::to_string(leaderboard[i]), 200, 225 - i * 25);

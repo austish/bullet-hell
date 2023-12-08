@@ -1,10 +1,9 @@
-// ui.cpp
 #include "ui.h"
 #include "borders.h"
 
 // UI player design
 void drawUI(Player p) {
-    glColor3f(0.5f, 0.5f, 0.5f); // Grey background
+    glColor3f(0.5f, 0.5f, 0.5f); // Set color to gray for background
     glBegin(GL_QUADS);
     glVertex2f(borderLeft, borderTop + UIheight);
     glVertex2f(borderRight, borderTop + UIheight); // Account for UI height
@@ -12,7 +11,7 @@ void drawUI(Player p) {
     glVertex2f(borderLeft, borderTop);
     glEnd();
 
-    glColor3f(1.0f, 1.0f, 1.0f); // White text
+    glColor3f(1.0f, 1.0f, 1.0f); // Set color to white for text
     std::string h = "Health: " + std::to_string(p.getHealth());
     drawText(h, borderLeft + 10, borderTop + UIheight - 30);
     std::string s = "Score: " + std::to_string(p.getScore());

@@ -10,7 +10,7 @@ private:
     float directionY;
     float bulletSize = 8.0f;
     bool markedForRemoval = false;
-    //used when bullets are drawn to match their colors to respective shooter
+    // Color values to be used with the glColor3f() function
     float colorRed;
     float colorGreen;
     float colorBlue;
