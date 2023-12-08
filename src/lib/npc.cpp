@@ -60,7 +60,7 @@ void NPC::updateNPC(float playerPosX, float playerPosY) {
         }
     }
 }
-
+// NPC shapes
 void NPC::drawNPC(){
     glColor3f(1.0f, 1.0f, 0.0f); // Set color (yellow)
     glPushMatrix();
@@ -94,7 +94,7 @@ void NPC::drawNPC(){
 
     glPopMatrix();
 }
-
+// Collision detect for the NPCs
 bool NPC::checkCollisionWithPlayer(float playerX, float playerY, float playerSize) const {
     return (std::abs(playerX - posX) < (size / 2 + playerSize / 2)) &&
            (std::abs(playerY - posY) < (size / 2 + playerSize / 2));
