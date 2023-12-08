@@ -1,9 +1,10 @@
-// NPC Class
 #ifndef NPC_H
 #define NPC_H
+
+#include "bullet.h"
+
 #include <string>
 #include <vector>
-#include "bullet.h"
 #include <algorithm>
 #include <cmath>
 

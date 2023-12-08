@@ -13,6 +13,7 @@
 #include "lib/menu.h"
 #include "lib/bullet.h"
 #include "lib/scores.h"
+
 #include <cstdlib>
 #include <ctime>
 #include <vector>

@@ -1,4 +1,3 @@
-// npc.cpp
 #include "npc.h"
 #include "borders.h"
 
@@ -60,23 +59,23 @@ void NPC::updateNPC(float playerPosX, float playerPosY) {
 
         // Wrap around logic
         if (posX > borderRight - size / 2) {
-            posX = borderLeft;
+            posX = borderLeft + size / 2;
         }
-        else if (posX < borderLeft - size / 2){
-            posX = borderRight;
+        else if (posX < borderLeft + size / 2){
+            posX = borderRight - size / 2;
         }
         
         if(posY > borderTop - size /2){
-            posY = borderBottom;
+            posY = borderBottom + size / 2;
         }
-        else if(posY < borderBottom - size / 2){
-            posY = borderTop;
+        else if(posY < borderBottom + size / 2){
+            posY = borderTop - size / 2;
         }
     }
 }
 
 void NPC::drawNPC(){
-    glColor3f(1.0f, 1.0f, 0.0f); // Set color (yellow)
+    glColor3f(1.0f, 1.0f, 0.0f); // Set color (yellow)d
     glPushMatrix();
     glTranslatef(posX, posY, 0.0f);
 
