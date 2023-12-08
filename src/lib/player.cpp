@@ -14,7 +14,7 @@ Player::Player() {
     size = 30.0f;
     speed = 3.0f;
     score = 0;
-    health = 0;
+    health = 3;
 }
 
 // Player movement
@@ -71,6 +71,7 @@ bool Player::checkCollisionWithBullet(float bulletX, float bulletY, float bullet
     return (std::abs(bulletX - posX) < (size / 2 + bulletSize / 2)) &&
            (std::abs(bulletY - posY) < (size / 2 + bulletSize / 2));
 }
+
 void Player::updateHealth(int amount) {
     health += amount;
 }

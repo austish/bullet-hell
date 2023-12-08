@@ -12,12 +12,12 @@
 #include "lib/ui.h"
 #include "lib/menu.h"
 #include "lib/bullet.h"
+#include "lib/scores.h"
 #include <cstdlib>
 #include <ctime>
 #include <vector>
 #include <cmath>
 #include <algorithm>
-#include "lib/scores.h"
 #include <cstdlib>
 #include <ctime>
 #include <vector>
@@ -38,19 +38,11 @@ void drawCircle(float centerX, float centerY, float radius, int numSegments);
 
 // Initialize game
 Player p;
-UI ui;
 std::vector<NPC> enemies;
 float spawnTimer = 0.0f; // timer for spawning NPCs
 bool leaderboardUpdated = false;
 bool gameEnded = false;
 GameState currentState = START;
-
-// State of game
-enum AppState {
-    MENU,
-    GAME
-};
-AppState currentState = MENU;
 
 // Global variables for mouse position
 float mouseX = 0.0f, mouseY = 0.0f;
@@ -98,25 +90,13 @@ void keyboardUp(unsigned char key, int x, int y) {
 //Update function
 void update(int value) {
    p.updatePlayer();
-
-   // Check if in game state
-   if (currentState == GAME) {
-      // TEMPORARY update calls. should be called whenever health or score changes
-      ui.updateHealth(1);
-      ui.updateScore(1);
-
-      for (auto &enemy: enemies) {
-         enemy.updateNPC();
-         enemy.shootBullets();
-         for (auto &bullet : enemy.getBullets()){
-            bullet.updateBullet();
-         }
-   // Check if in game state
-   float playerPosX = p.getPosX();
-   float playerPosY = p.getPosY();
    if (currentState == GAME) {
       // TEMPORARY update calls. should be called whenever health or score changes
       // p.updateHealth(1);
+
+      // Check if in game state
+      float playerPosX = p.getPosX();
+      float playerPosY = p.getPosY();
 
       for (auto &enemy: enemies) {
          enemy.updateNPC(playerPosX, playerPosY);
@@ -149,42 +129,44 @@ void update(int value) {
         }
     }
 
-        // Update bullets
-        for (auto& bullet : p.getBullets()) {
-            bullet.updateBullet();
+      // Update bullets
+      for (auto& bullet : p.getBullets()) {
+         bullet.updateBullet();
 
-            // Check if the bullet collides with any NPC
-            for (auto& enemy : enemies) {
-                if (enemy.checkCollisionWithBullet(bullet.getPosX(), bullet.getPosY(), bullet.getSize())) {
-                    // Bullet hit an NPC, you can handle this event (e.g., reduce NPC health) here
-                    enemy.markForRemoval();
-                    bullet.markForRemoval(); // Mark the bullet for removal
-                }
-            }
-        }
+         // Check if the bullet collides with any NPC
+         for (auto& enemy : enemies) {
+               if (enemy.checkCollisionWithBullet(bullet.getPosX(), bullet.getPosY(), bullet.getSize())) {
+                  // Bullet hit an NPC, you can handle this event (e.g., reduce NPC health) here
+                  enemy.markForRemoval();
+                  bullet.markForRemoval(); // Mark the bullet for removal
+                  p.removeMarkedBullets();
+                  p.updateScore(100); //give player 100 points
+               }
+         }
+      }
 
         // Update NPCs
         for (auto& enemy : enemies) {
-            enemy.updateNPC();
+            enemy.updateNPC(playerPosX, playerPosY);
+            enemy.shootBullets();
 
             // Check if any NPC bullet collides with the player
             for (auto& enemyBullet : enemy.getBullets()) {
+               enemyBullet.updateBullet();
+               //ADD update for bullets here
                 if (p.checkCollisionWithBullet(enemyBullet.getPosX(), enemyBullet.getPosY(), enemyBullet.getSize())) {
                     // NPC bullet hit the player, you can handle this event (e.g., reduce player health) here
-                    
+                    p.updateHealth(-1); //take one health from player
                     enemyBullet.markForRemoval(); // Mark the NPC bullet for removal
+                    enemy.removeMarkedBullets(); //remove bullet that hit player
                 }
             }
         }
 
 
-        // Remove bullets marked for removal
-        p.removeMarkedBullets();
         // Remove NPCs marked for removal
         enemies.erase(std::remove_if(enemies.begin(), enemies.end(), [](const NPC& enemy) { return enemy.getMarkedForRemoval(); }), enemies.end());
    }
-   }
-}
 
    glutPostRedisplay();
    glutTimerFunc(16, update, 0); // Approx 60 FPS
@@ -216,7 +198,6 @@ void display() {
             bullet.drawBullet();
          }
       }
-      ui.drawUI();
       for (auto& bullet : p.getBullets()) {
          bullet.drawBullet();
       }
@@ -224,7 +205,7 @@ void display() {
       glColor3f(0.0f, 1.0f, 0.0f); // green
       drawCircle(mouseX, mouseY, 5.0f, 12); // Radius 5 and 12 segments
 
-      //drawUI(p);
+      drawUI(p);
    // End
    } else if (currentState == END) {
       gameEnded = true;

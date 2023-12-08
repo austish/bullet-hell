@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include "bullet.h"
+#include <algorithm>
 #include <cmath>
 
 enum ShapeType { SQUARE, TRIANGLE, CIRCLE };
@@ -34,6 +35,7 @@ class NPC{
         void updateNPC(float playerPosX, float playerPosY); // Updated to take player's position
         // Method for collision detection
         bool checkCollisionWithPlayer(float playerX, float playerY, float playerSize) const;
+        void removeMarkedBullets();
 };
 
 #endif

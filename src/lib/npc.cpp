@@ -5,6 +5,10 @@
 NPC::NPC(float X, float Y, float Size, float Speed, ShapeType Shape)
 : posX(X), posY(Y), size(Size), speed(Speed), shape(Shape), state(NORMAL) {}
 
+std::vector<Bullet>& NPC::getBullets(){
+    return bullets;
+}
+
 void NPC::updateNPC(float playerPosX, float playerPosY) {
     // Calculate distance to player
     float dx = posX - playerPosX;
@@ -128,4 +132,10 @@ void NPC::markForRemoval(){
 
 bool NPC::getMarkedForRemoval() const {
     return markedForRemoval;
+}
+
+void NPC::removeMarkedBullets() {
+    bullets.erase(std::remove_if(bullets.begin(), bullets.end(), [](const Bullet& bullet) {
+        return bullet.getMarkedForRemoval();
+    }), bullets.end());
 }
