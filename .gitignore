@@ -1,1 +1,3 @@
 *.o
+src/lib/text/
+src/lib/borders.h
