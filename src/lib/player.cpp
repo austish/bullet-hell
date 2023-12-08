@@ -75,19 +75,19 @@ bool Player::checkCollisionWithBullet(float bulletX, float bulletY, float bullet
 void Player::updateHealth(int amount) {
     health += amount;
 }
-
+// Update score of the player
 void Player::updateScore(int amount) {
     score += amount;
 }
-
+// Get Player score
 int Player::getScore() {
     return score;
 }
-
+// Get Player health
 int Player::getHealth() {
     return health;
 }
-
+// Player dies
 void Player::resetPlayer() {
     posX = 0.0f;
     posY = 0.0f;
