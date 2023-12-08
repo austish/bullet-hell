@@ -92,7 +92,7 @@ void Player::resetPlayer() {
     posX = 0.0f;
     posY = 0.0f;
     score = 0;
-    health = 0;
+    health = 3;
 }
 
 //Draw player

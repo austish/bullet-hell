@@ -157,6 +157,15 @@ void update(int value) {
                 if (p.checkCollisionWithBullet(enemyBullet.getPosX(), enemyBullet.getPosY(), enemyBullet.getSize())) {
                     // NPC bullet hit the player, you can handle this event (e.g., reduce player health) here
                     p.updateHealth(-1); //take one health from player
+                    if(p.getHealth() == 0){
+                        //remove all player bullets from last instance of game
+                        for (auto& bullet : p.getBullets()) {
+                           bullet.markForRemoval();
+                        }
+                        p.removeMarkedBullets();
+                     //End game
+                     currentState = END;
+                    }
                     enemyBullet.markForRemoval(); // Mark the NPC bullet for removal
                     enemy.removeMarkedBullets(); //remove bullet that hit player
                 }
