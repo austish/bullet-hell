@@ -16,6 +16,7 @@
 #include <ctime>
 #include <vector>
 #include <cmath>
+#include <algorithm>
 
 // Keyboard button pressed
 void keyboardDown(unsigned char key, int x, int y);
@@ -122,11 +123,43 @@ void update(int value) {
 
       // Update bullets
       for (auto& bullet : p.getBullets()) {
-        bullet.updateBullet();
+         bullet.updateBullet();
       }
-      // Remove bullets that are off-screen or marked for removal
-      p.removeMarkedBullets();
-   }
+
+        // Update bullets
+        for (auto& bullet : p.getBullets()) {
+            bullet.updateBullet();
+
+            // Check if the bullet collides with any NPC
+            for (auto& enemy : enemies) {
+                if (enemy.checkCollisionWithBullet(bullet.getPosX(), bullet.getPosY(), bullet.getSize())) {
+                    // Bullet hit an NPC, you can handle this event (e.g., reduce NPC health) here
+                    enemy.markForRemoval();
+                    bullet.markForRemoval(); // Mark the bullet for removal
+                }
+            }
+        }
+
+        // Update NPCs
+        for (auto& enemy : enemies) {
+            enemy.updateNPC();
+
+            // Check if any NPC bullet collides with the player
+            for (auto& enemyBullet : enemy.getBullets()) {
+                if (p.checkCollisionWithBullet(enemyBullet.getPosX(), enemyBullet.getPosY(), enemyBullet.getSize())) {
+                    // NPC bullet hit the player, you can handle this event (e.g., reduce player health) here
+                    
+                    enemyBullet.markForRemoval(); // Mark the NPC bullet for removal
+                }
+            }
+        }
+
+
+        // Remove bullets marked for removal
+        p.removeMarkedBullets();
+        // Remove NPCs marked for removal
+        enemies.erase(std::remove_if(enemies.begin(), enemies.end(), [](const NPC& enemy) { return enemy.getMarkedForRemoval(); }), enemies.end());
+    }
 
    glutPostRedisplay();
    glutTimerFunc(16, update, 0); // Approx 60 FPS

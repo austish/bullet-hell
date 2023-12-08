@@ -10,12 +10,11 @@ void Bullet::updateBullet() {
 
     // Check if the bullet is out of bounds, and if so, mark it for removal
     if (posY > borderTop || posY < borderBottom || posX < borderLeft || posX > borderRight) {
-        markForRemoval = true;
+        markedForRemoval = true;
     }
 }
 
 void Bullet::drawBullet() {
-    const float bulletSize = 8.0f;
     glColor3f(colorRed, colorGreen, colorBlue);  //color should match player/npc
     glPushMatrix();
     glTranslatef(posX, posY, 0.0f);
@@ -28,6 +27,22 @@ void Bullet::drawBullet() {
     glPopMatrix();
 }
 
-bool Bullet::isMarkedForRemoval() const {
-    return markForRemoval;
+void Bullet::markForRemoval(){
+    markedForRemoval = true;
+}
+
+float Bullet::getPosX(){
+    return posX;
+}
+
+float Bullet::getPosY(){
+    return posY;
+}
+
+float Bullet::getSize(){
+    return bulletSize;
+}
+
+bool Bullet::getMarkedForRemoval() const {
+    return markedForRemoval;
 }

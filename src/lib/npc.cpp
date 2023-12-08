@@ -46,3 +46,16 @@ void NPC::shootBullets() {
         bullets.push_back(Bullet(posX, posY - BULLET_SPEED, BULLET_SPEED, 0.0f, -1.0f, 1.0f, 1.0f, 0.0f)); // Down
     }
 }
+
+bool NPC::checkCollisionWithBullet(float bulletX, float bulletY, float bulletSize) const{
+    return (std::abs(bulletX - posX) < (size / 2 + bulletSize / 2)) &&
+           (std::abs(bulletY - posY) < (size / 2 + bulletSize / 2));
+}
+
+void NPC::markForRemoval(){
+    markedForRemoval = true;
+}
+
+bool NPC::getMarkedForRemoval() const {
+    return markedForRemoval;
+}

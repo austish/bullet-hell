@@ -10,7 +10,7 @@ class NPC{
         float posY;
         float size;
         float speed;
-        int state; // 1 for alive, 0 for dead
+        bool markedForRemoval = false;
         double lastShotTime;
         double shootingInterval = 3000; // Time interval between shots 3 seconds
         std::vector<Bullet> bullets;
@@ -20,6 +20,9 @@ class NPC{
         void updateNPC();
         void drawNPC();
         void shootBullets();
+        bool checkCollisionWithBullet(float bulletX, float bulletY, float bulletSize) const;
+        void markForRemoval();
+        bool getMarkedForRemoval() const;
 };
 
 #endif

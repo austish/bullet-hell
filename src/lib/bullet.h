@@ -8,7 +8,8 @@ private:
     float speed;
     float directionX;
     float directionY;
-    bool markForRemoval = false;
+    float bulletSize = 8.0f;
+    bool markedForRemoval = false;
     //used when bullets are drawn to match their colors to respective shooter
     float colorRed;
     float colorGreen;
@@ -17,7 +18,11 @@ public:
     Bullet(float X, float Y, float bulletSpeed, float dirX, float dirY, float Red, float Green, float Blue);
     void updateBullet();
     void drawBullet();
-    bool isMarkedForRemoval() const;
+    void markForRemoval();
+    float getPosX();
+    float getPosY();
+    float getSize();
+    bool getMarkedForRemoval() const;
 };
 
 #endif

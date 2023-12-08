@@ -24,6 +24,7 @@ class Player {
         void removeMarkedBullets();
         float getPosX();
         float getPosY();
+        bool checkCollisionWithBullet(float bulletX, float bulletY, float bulletSize) const;
 };
 
 

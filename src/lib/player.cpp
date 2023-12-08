@@ -67,7 +67,7 @@ std::vector<Bullet>& Player::getBullets() {
 }
 
 void Player::removeMarkedBullets() {
-    bullets.erase(std::remove_if(bullets.begin(), bullets.end(), [](const Bullet &b) { return b.isMarkedForRemoval(); }), bullets.end());
+    bullets.erase(std::remove_if(bullets.begin(), bullets.end(), [](const Bullet &b) { return b.getMarkedForRemoval(); }), bullets.end());
 }
 
 float Player::getPosX(){
@@ -76,4 +76,9 @@ float Player::getPosX(){
 
 float Player::getPosY(){
     return posY;
+}
+
+bool Player::checkCollisionWithBullet(float bulletX, float bulletY, float bulletSize) const{
+    return (std::abs(bulletX - posX) < (size / 2 + bulletSize / 2)) &&
+           (std::abs(bulletY - posY) < (size / 2 + bulletSize / 2));
 }
